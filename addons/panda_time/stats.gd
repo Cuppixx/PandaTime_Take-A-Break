@@ -11,12 +11,15 @@ class_name StatsDataPT extends Resource
 
 @export var break_window_timer_countdown:bool = true
 @export var break_window_time:int = 5 * 60 # In seconds
+@export var break_window_close_on_timeout:bool = true
+@export var break_window_timeout_time:int = 8 # In seconds
+#auto close and timer for auto close
 
 @export var break_window_custom_image_folder_path:String = "res://addons/panda_time/images/"
-@export var break_window_image_filter_color:Color = Color.hex(006763)
-@export var break_window_ui_bg_color:Color = Color.hex(00004150)
+@export var break_window_image_filter_color:Color = Color.html("006763")
+@export var break_window_ui_bg_color:Color = Color.html("00004169")
 
 # Reminder Window Settings
 @export var reminder_window_enabled:bool = true
 @export var reminder_time:int = 0.5 * 60 # In seconds
-@export var reminder_window_bg_color:Color = Color.hex(00004150)
+@export var reminder_window_bg_color:Color = Color.html("00004169")

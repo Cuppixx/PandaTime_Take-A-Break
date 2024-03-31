@@ -131,7 +131,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="ColorRect" type="ColorRect" parent="Control/MessageMarginContainer"]
 layout_mode = 2
-color = Color(0, 0, 0.254902, 0.313726)
+color = Color(0, 0, 0.254902, 0.411765)
 
 [node name="MessageLabel" type="Label" parent="Control/MessageMarginContainer"]
 layout_mode = 2

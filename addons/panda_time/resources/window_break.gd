@@ -255,6 +255,7 @@ func _get_dir_contents(path):
 var hours:String = str(0)
 var minutes:String = str(0)
 var seconds:String = str(0)
+@onready var test = parent.stats.break_window_timeout_time
 func _on_timer_timeout() -> void:
 	# Counting the timer down
 	if is_timer_countdown:
@@ -269,10 +270,10 @@ func _on_timer_timeout() -> void:
 			# TODO: PLAY SOUND
 			timer_label.self_modulate = Color(1,0,0,1)
 			timer_label.text = "BREAK IS OVER"
-		elif countdown_time == -15:
+		elif countdown_time == -test:
 			$Timer.stop()
 			_close_window()
-		elif countdown_time >= -15 and countdown_time < 0:
+		elif countdown_time >= -test and countdown_time < 0:
 			if timer_label.visible == true: timer_label.visible = false
 			else: timer_label.visible = true
 		countdown_time -= 1

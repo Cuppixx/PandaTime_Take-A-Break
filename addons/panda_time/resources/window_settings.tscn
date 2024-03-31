@@ -60,10 +60,23 @@ text = "Session Time: 45 min"
 [node name="SessionHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 min_value = 5.0
 max_value = 300.0
 step = 5.0
 value = 45.0
+
+[node name="SizeLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Size 100 percent"
+
+[node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 100.0
+max_value = 200.0
+step = 5.0
+value = 100.0
 
 [node name="ExclusiveButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -73,17 +86,6 @@ text = "Break Window Exclusive"
 [node name="MessageButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Hide Break Quotes"
-
-[node name="SizeLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
-layout_mode = 2
-text = "Size 100 percent"
-
-[node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
-layout_mode = 2
-min_value = 100.0
-max_value = 200.0
-step = 5.0
-value = 100.0
 
 [node name="CountdownButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -98,15 +100,16 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
 disabled = true
 
-[node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
-layout_mode = 2
-text = "Countdown Time: 45 min"
-
 [node name="CountdownHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 min_value = 1.0
 max_value = 45.0
 value = 1.0
+
+[node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Countdown Time: 45 min"
 
 [node name="ImageLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -137,19 +140,21 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
 disabled = true
 
-[node name="ReminderLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
-layout_mode = 2
-text = " Reminder At"
-
 [node name="ReminderHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 min_value = 5.0
 max_value = 295.0
 step = 5.0
 value = 5.0
 
+[node name="ReminderLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = " Reminder At"
+
 [node name="ResetButton" type="Button" parent="ScrollContainer/Control/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 text = "Reset Settings"
 
 [connection signal="pressed" from="ScrollContainer/Control/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]

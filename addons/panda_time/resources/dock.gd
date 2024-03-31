@@ -91,8 +91,12 @@ func _open_new_reminder_window() -> void:
 
 func _open_new_session_window() -> void:
 	timer.stop()
-	var window:PTwindowBreak = PT_WINDOW_BREAK.instantiate()
 
+	skip_button.disabled = true
+	stop_button.disabled = true
+	settings_button.disabled = true
+
+	var window:PTwindowBreak = PT_WINDOW_BREAK.instantiate()
 	match stats.break_window_exclusive:
 		true: window.exclusive = false
 		false: window.exclusive = true
@@ -110,6 +114,9 @@ func _open_new_session_window() -> void:
 		_on_break_timer_timeout()
 		timer.paused = false
 		timer.start(1)
+		skip_button.disabled = false
+		stop_button.disabled = false
+		settings_button.disabled = false
 	)
 
 func write_savefile() -> void:
