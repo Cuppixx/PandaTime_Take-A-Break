@@ -10,9 +10,9 @@ config_version=5
 
 [application]
 
-config/name="Koala Time Addon"
+config/name="Panda Time Addon"
 config/version="1.0.1"
-config/tags=PackedStringArray("addon")
+config/tags=PackedStringArray("addon", "under_development")
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.png"
 
@@ -22,4 +22,4 @@ project/assembly_name="Take A Break"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/koala_time/plugin.cfg")
+enabled=PackedStringArray("res://addons/panda_time/plugin.cfg")

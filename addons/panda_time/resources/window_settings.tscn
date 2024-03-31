@@ -1,0 +1,107 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3xdt0tv6t0q7"]
+
+[ext_resource type="Script" path="res://addons/panda_time/resources/window_settings.gd" id="1_4uy82"]
+
+[node name="WindowSettings" type="Window"]
+title = "TEST"
+size = Vector2i(500, 500)
+script = ExtResource("1_4uy82")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.403922, 0, 0.411765, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="ScrollContainer"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer/Control/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Session Time: 45 min"
+
+[node name="HSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+min_value = 5.0
+max_value = 300.0
+step = 5.0
+value = 45.0
+
+[node name="Button2" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Break Window Exclusive"
+
+[node name="Button3" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Break Window Message"
+
+[node name="Label2" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Size 100 percent"
+
+[node name="HSlider2" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+min_value = 100.0
+max_value = 200.0
+step = 5.0
+value = 100.0
+
+[node name="Button4" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Break Countdown"
+
+[node name="HSlider3" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 55.0
+value = 1.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "IMAGE FILTER"
+
+[node name="ColorPickerButton2" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "UI FILTER"
+
+[node name="Button5" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Reminder Enabled"
+
+[node name="Label3" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Reminder At"
+
+[node name="HSlider4" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+min_value = 5.0
+max_value = 295.0
+step = 5.0
+value = 5.0
+
+[node name="Button6" type="Button" parent="ScrollContainer/Control/VBoxContainer"]
+layout_mode = 2
+text = "Reset Settings"

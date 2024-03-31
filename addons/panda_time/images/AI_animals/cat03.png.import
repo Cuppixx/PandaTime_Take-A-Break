@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://82xi70f526v2"
-path="res://.godot/imported/cat01.png-512f85944947ca55cb18c6598594c4b7.ctex"
+uid="uid://c80gmolo7evh0"
+path="res://.godot/imported/cat03.png-2370223f28f4ab99fc4f349a8ac2041c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/koala_time/images/AI_animals/cat01.png"
-dest_files=["res://.godot/imported/cat01.png-512f85944947ca55cb18c6598594c4b7.ctex"]
+source_file="res://addons/panda_time/images/AI_animals/cat03.png"
+dest_files=["res://.godot/imported/cat03.png-2370223f28f4ab99fc4f349a8ac2041c.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-# KoalaTime_Take-A-Break
+# PandaTime_Take-A-Break
 
 ## Overview
 
@@ -8,7 +8,7 @@ Work time is over! You get a cute image and a fun message to go along with it! I
 
 Want to [display your own png files](#display-your-own-png-files)!?
 
-![KoalaTime](readme-example.png)
+![PandaTime](readme-example.png)
 
 ## TODO / What I want to do
 - _No pending tasks_
@@ -19,7 +19,7 @@ Want to [display your own png files](#display-your-own-png-files)!?
 
 1. Launch Godot Engine 4.X
 2. Open the AssetLib Tab
-3. Search for 'KoalaTime' (that should bring up the plugin)
+3. Search for 'PandaTime' (that should bring up the plugin)
 4. Download and Install my plugin
 5. From the `res://` directory delete or move the addons LICENSE.md to a designated folder
 6. Enable the plugin in `Project Settings | Plugins`
@@ -28,8 +28,8 @@ Want to [display your own png files](#display-your-own-png-files)!?
 
 1. Download the plugin as a zip file
 2. Create an `addons` directory in your Godot project
-3. Inside of the `addons` directory create an `koala_time` directory
-4. Copy/Paste all files from the zip's `addons/koala_time` directory into the equivalent projects folder
+3. Inside of the `addons` directory create an panda_time` directory
+4. Copy/Paste all files from the zip's `addons/panda_time` directory into the equivalent projects folder
 5. Enable the plugin in `Project Settings | Plugins`
 
 Your Godot directory structure should look like this:
@@ -37,8 +37,8 @@ Your Godot directory structure should look like this:
 ```
 res://
 	addons
-		koala_time
-			...all the koala_time coding files...
+		panda_time
+			...all the panda_time coding files...
 ```
 
 ## Display your own png files
@@ -48,7 +48,7 @@ Under the images folder ...
 ```
 res://
 	addons
-		koala_time
+		panda_time
 			...other files and folders...
 			images
 ```

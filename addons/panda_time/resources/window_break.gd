@@ -1,12 +1,14 @@
 @tool
-class_name KTwindow extends Window
+class_name PTwindowBreak extends Window
 
 const TIMER_TEXT:String = "%s : %s : %s"
 const BREAK_TEXT:String = "%d min"
-const IMAGE_ROOT_PATH:String = "res://addons/koala_time/images/"
+const IMAGE_ROOT_PATH:String = "res://addons/panda_time/images/"
 const IMAGE_EXTENSION:String = "png"
 const ERR:String = "--> KT: An error occurred when trying to access the path!"
 var file_array = []
+var is_timer_countdown:bool = false
+var countdown_time:int = 5 * 60 # In seconds
 var new_break_time:int
 
 var message := {
@@ -164,6 +166,7 @@ var message := {
 	150: "Time to RTFMM.",
 }
 
+@onready var parent:Control = $".."
 @onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/Button
 @onready var break_time_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Label
 @onready var break_time_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider
@@ -189,7 +192,18 @@ func _ready() -> void:
 	_get_dir_contents(IMAGE_ROOT_PATH)
 	if file_array.size() > 0:
 		$Control/TextureRect.texture = load(file_array[randi_range(0,file_array.size()-1)])
-	$Control/MessageMarginContainer/MessageLabel.text = message[randi_range(1,message.size())]
+	if parent.stats.break_window_message == true:
+		# Default color #00004150
+		$Control/MessageMarginContainer/ColorRect.color = parent.stats.break_window_ui_bg_color * Color(1,1,1,0.31)
+		$Control/MessageMarginContainer/MessageLabel.text = message[randi_range(1,message.size())]
+	else:
+		$Control/MessageMarginContainer/MessageLabel.text = ""
+		$Control/MessageMarginContainer.visible = false
+	is_timer_countdown = parent.stats.break_window_timer_countdown
+	countdown_time = parent.stats.break_window_time
+	# Default color #006763
+	$Control/ColorRect.color = parent.stats.break_window_image_filter_color
+	$Control/SettingsMarginContainer/ColorRect.color = parent.stats.break_window_ui_bg_color * Color(1,1,1,0.31)
 
 	# Set Settings and Data
 	timer_label.text = TIMER_TEXT % ["00","00","00"]
@@ -197,13 +211,7 @@ func _ready() -> void:
 	break_time_slider.value = new_break_time / 60
 
 	# Connect Signals
-	next_button.pressed.connect(func() -> void:
-		page_flip_audio.play()
-		anim_player.speed_scale = 11
-		anim_player.play("fade_out")
-		await page_flip_audio.finished
-		queue_free()
-	)
+	next_button.pressed.connect(_close_window)
 	break_time_slider.drag_started.connect(func() -> void: scribble_audio.play())
 	break_time_slider.drag_ended.connect(func(_bool:bool) -> void:
 		scribble_audio.stop(); pencil_tick_audio.play()
@@ -215,6 +223,13 @@ func _ready() -> void:
 
 	# Start the break time
 	$Timer.start(1)
+
+func _close_window() -> void:
+	page_flip_audio.play()
+	anim_player.speed_scale = 11
+	anim_player.play("fade_out")
+	await page_flip_audio.finished
+	queue_free()
 
 func _set_break_time_label() -> void:
 	break_time_label.text = BREAK_TEXT % [new_break_time / 60]
@@ -241,14 +256,37 @@ var hours:String = str(0)
 var minutes:String = str(0)
 var seconds:String = str(0)
 func _on_timer_timeout() -> void:
-	seconds = str(int(seconds) + 1)
-	if int(seconds) >= 60: seconds = str(0); minutes = str(int(minutes) + 1)
-	if int(minutes) >= 60: minutes = str(0); hours = str(int(hours) + 1)
+	# Counting the timer down
+	if is_timer_countdown:
+		hours = str(countdown_time / 3600)
+		minutes = str(countdown_time % 3600 / 60)
+		seconds = str(countdown_time % 3600 % 60)
+		if int(hours) < 10: hours = str(0)+hours
+		if int(minutes) < 10: minutes = str(0)+minutes
+		if int(seconds) < 10: seconds = str(0)+seconds
+		if countdown_time > 0: timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
+		if countdown_time == 0:
+			# TODO: PLAY SOUND
+			timer_label.self_modulate = Color(1,0,0,1)
+			timer_label.text = "BREAK IS OVER"
+		elif countdown_time == -15:
+			$Timer.stop()
+			_close_window()
+		elif countdown_time >= -15 and countdown_time < 0:
+			if timer_label.visible == true: timer_label.visible = false
+			else: timer_label.visible = true
+		countdown_time -= 1
 
-	var final_hours:String = hours
-	var final_minutes:String = minutes
-	var final_seconds:String = seconds
-	if int(final_hours) < 10: final_hours = str(0)+hours
-	if int(final_minutes) < 10: final_minutes = str(0)+minutes
-	if int(final_seconds) < 10: final_seconds = str(0)+seconds
-	timer_label.text = TIMER_TEXT % [final_hours,final_minutes,final_seconds]
+	# Counting the timer up
+	else:
+		seconds = str(int(seconds) + 1)
+		if int(seconds) >= 60: seconds = str(0); minutes = str(int(minutes) + 1)
+		if int(minutes) >= 60: minutes = str(0); hours = str(int(hours) + 1)
+
+		var final_hours:String = hours
+		var final_minutes:String = minutes
+		var final_seconds:String = seconds
+		if int(final_hours) < 10: final_hours = str(0)+hours
+		if int(final_minutes) < 10: final_minutes = str(0)+minutes
+		if int(final_seconds) < 10: final_seconds = str(0)+seconds
+		timer_label.text = TIMER_TEXT % [final_hours,final_minutes,final_seconds]
