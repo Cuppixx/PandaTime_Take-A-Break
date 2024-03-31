@@ -5,11 +5,11 @@ class_name StatsDataPT extends Resource
 @export var break_time:int = 45 * 60 # In seconds
 
 # Break Window Settings
-@export var break_window_exclusive:bool = true
-@export var break_window_size:float = 100 # In percentage (100 == minimum / 200 = maximum)
+@export var break_window_exclusive:bool = false
+@export var break_window_size:float = 150 # In percentage (100 == minimum / 200 = maximum)
 @export var break_window_message:bool = true
 
-@export var break_window_timer_countdown:bool = false
+@export var break_window_timer_countdown:bool = true
 @export var break_window_time:int = 5 * 60 # In seconds
 
 @export var break_window_custom_image_folder_path:String = "res://addons/panda_time/images/"

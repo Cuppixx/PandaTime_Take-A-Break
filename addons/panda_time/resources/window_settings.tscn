@@ -1,9 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3xdt0tv6t0q7"]
+[gd_scene load_steps=7 format=3 uid="uid://c3xdt0tv6t0q7"]
 
 [ext_resource type="Script" path="res://addons/panda_time/resources/window_settings.gd" id="1_4uy82"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wdlsn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1y74y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1msku"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rmw74"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_agdh5"]
+
 [node name="WindowSettings" type="Window"]
-title = "TEST"
+title = "PandaTime Settings Window"
+position = Vector2i(0, 36)
 size = Vector2i(500, 500)
 script = ExtResource("1_4uy82")
 
@@ -13,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.403922, 0, 0.411765, 1)
+color = Color(0.235294, 0.129412, 0.266667, 1)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchors_preset = 15
@@ -37,71 +48,108 @@ grow_vertical = 2
 [node name="GridContainer" type="GridContainer" parent="ScrollContainer/Control/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="Label" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="SessionLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Session Time: 45 min"
 
-[node name="HSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="SessionHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 min_value = 5.0
 max_value = 300.0
 step = 5.0
 value = 45.0
 
-[node name="Button2" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="ExclusiveButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+button_pressed = true
 text = "Break Window Exclusive"
 
-[node name="Button3" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="MessageButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Break Window Message"
+text = "Hide Break Quotes"
 
-[node name="Label2" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="SizeLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Size 100 percent"
 
-[node name="HSlider2" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 min_value = 100.0
 max_value = 200.0
 step = 5.0
 value = 100.0
 
-[node name="Button4" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="CountdownButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Break Countdown"
+text = "Toggle Break Countdown"
 
-[node name="HSlider3" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wdlsn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1y74y")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1msku")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
+disabled = true
+
+[node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Countdown Time: 45 min"
+
+[node name="CountdownHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 min_value = 1.0
-max_value = 55.0
+max_value = 45.0
 value = 1.0
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="ImageLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = " Image Filter Color ---->"
+
+[node name="ImageColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "IMAGE FILTER"
 
-[node name="ColorPickerButton2" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="UiLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = " UI Background Color ---->"
+
+[node name="UiColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "UI FILTER"
 
-[node name="Button5" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="ReminderButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Reminder Enabled"
+text = "Toggle Reminder"
 
-[node name="Label3" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="EmptyButton2" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Reminder At"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wdlsn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1y74y")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1msku")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
+disabled = true
 
-[node name="HSlider4" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="ReminderLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = " Reminder At"
+
+[node name="ReminderHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 min_value = 5.0
 max_value = 295.0
 step = 5.0
 value = 5.0
 
-[node name="Button6" type="Button" parent="ScrollContainer/Control/VBoxContainer"]
+[node name="ResetButton" type="Button" parent="ScrollContainer/Control/VBoxContainer"]
 layout_mode = 2
 text = "Reset Settings"
+
+[connection signal="pressed" from="ScrollContainer/Control/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
