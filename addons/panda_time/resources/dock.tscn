@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2xno6jyg2rpn"]
+[gd_scene load_steps=5 format=3 uid="uid://d2xno6jyg2rpn"]
 
 [ext_resource type="Script" path="res://addons/panda_time/resources/dock.gd" id="1_c7ldf"]
+[ext_resource type="AudioStream" uid="uid://dgwgj5ew4swue" path="res://addons/panda_time/sounds/pageflip.mp3" id="2_7f2xk"]
+[ext_resource type="AudioStream" uid="uid://gymxg0u7pfwr" path="res://addons/panda_time/sounds/scribble_long_strokes.mp3" id="3_0sh1u"]
+[ext_resource type="AudioStream" uid="uid://b1iivgtmgqk4l" path="res://addons/panda_time/sounds/pencil_check_mark.mp3" id="4_avukd"]
 
 [node name="PandaTimeDock" type="Control"]
 custom_minimum_size = Vector2(173, 100)
@@ -43,5 +46,21 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 text = "Settings"
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="AudioStreamPlayer_PageFlip" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_7f2xk")
+volume_db = 3.0
+pitch_scale = 1.15
+
+[node name="AudioStreamPlayer_Scribble" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_0sh1u")
+volume_db = -10.0
+
+[node name="AudioStreamPlayer_PencilTick" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_avukd")
+volume_db = -18.0
+pitch_scale = 0.88
 
 [connection signal="timeout" from="BreakTimer" to="." method="_on_break_timer_timeout"]

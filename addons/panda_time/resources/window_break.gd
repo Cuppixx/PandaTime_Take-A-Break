@@ -3,6 +3,7 @@ class_name PTwindowBreak extends Window
 
 const TIMER_TEXT:String = "%s : %s : %s"
 const BREAK_TEXT:String = "%d min"
+const TIMEOUT_TEXT:String = "BREAK IS OVER"
 const IMAGE_ROOT_PATH:String = "res://addons/panda_time/images/"
 const IMAGE_EXTENSION:String = "png"
 const ERR:String = "--> KT: An error occurred when trying to access the path!"
@@ -165,16 +166,49 @@ var message := {
 
 	150: "Time to RTFMM.",
 }
+var timeout_message := {
+	1:  "Break is done",
+	2:  "Break is over",
+	3:  "Break is up",
+	4:  "No more break",
 
+	5:  "Time is done",
+	6:  "Time is over",
+	7:  "Time is up",
+	8:  "Time to code",
+
+	9:  "Enough rest",
+	10: "Work calls",
+	11: "Back to coding",
+	12: "Resume coding",
+	13: "Fun is over",
+	14: "Back at it",
+}
+
+#region @onready vars
 @onready var parent:Control = $".."
-@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/Button
-@onready var break_time_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/Label
-@onready var break_time_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/HSlider
+
+@onready var bg_color:ColorRect = $Control/ColorRect
+@onready var bg_texture:TextureRect = $Control/TextureRect
+
+@onready var message_container:MarginContainer = $Control/MessageMarginContainer
+@onready var message_bg:ColorRect = $Control/MessageMarginContainer/ColorRect
+@onready var message_label:Label = $Control/MessageMarginContainer/MessageLabel
+
+@onready var timer:Timer = $Timer
 @onready var timer_label:Label = $Control/TimerMarginContainer/TimerLabel
+
+@onready var settings_bg:ColorRect = $Control/SettingsMarginContainer/ColorRect
+@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/NextButton
+@onready var session_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionLabel
+@onready var session_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionHSlider
+
 @onready var anim_player:AnimationPlayer = $AnimationPlayer
-@onready var page_flip_audio:AudioStreamPlayer = $AudioStreamPlayer1
-@onready var scribble_audio:AudioStreamPlayer = $AudioStreamPlayer2
-@onready var pencil_tick_audio:AudioStreamPlayer = $AudioStreamPlayer3
+
+@onready var page_flip_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_PageFlip"
+@onready var scribble_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_Scribble"
+@onready var pencil_tick_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_PencilTick"
+#endregion
 
 func _notification(what:int) -> void:
 	match what:
@@ -190,39 +224,38 @@ func _ready() -> void:
 
 	# Set random Background and Text
 	_get_dir_contents(IMAGE_ROOT_PATH)
-	if file_array.size() > 0:
-		$Control/TextureRect.texture = load(file_array[randi_range(0,file_array.size()-1)])
+	if file_array.size() > 0: bg_texture.texture = load(file_array[randi_range(0,file_array.size()-1)])
 	if parent.stats.break_window_message == true:
-		# Default color #00004150
-		$Control/MessageMarginContainer/ColorRect.color = parent.stats.break_window_ui_bg_color * Color(1,1,1,0.31)
-		$Control/MessageMarginContainer/MessageLabel.text = message[randi_range(1,message.size())]
+		message_bg.color = parent.stats.break_window_ui_bg_color
+		message_label.text = message[randi_range(1,message.size())]
 	else:
-		$Control/MessageMarginContainer/MessageLabel.text = ""
-		$Control/MessageMarginContainer.visible = false
+		message_label.text = ""
+		message_container.visible = false
+
+	# Load Settings and Data
+	bg_color.color = parent.stats.break_window_image_filter_color
+	settings_bg.color = parent.stats.break_window_ui_bg_color
+
 	is_timer_countdown = parent.stats.break_window_timer_countdown
 	countdown_time = parent.stats.break_window_time
-	# Default color #006763
-	$Control/ColorRect.color = parent.stats.break_window_image_filter_color
-	$Control/SettingsMarginContainer/ColorRect.color = parent.stats.break_window_ui_bg_color * Color(1,1,1,0.31)
-
-	# Set Settings and Data
 	timer_label.text = TIMER_TEXT % ["00","00","00"]
-	_set_break_time_label()
-	break_time_slider.value = new_break_time / 60
+
+	_set_session_time_label()
+	session_slider.value = new_break_time / 60
 
 	# Connect Signals
 	next_button.pressed.connect(_close_window)
-	break_time_slider.drag_started.connect(func() -> void: scribble_audio.play())
-	break_time_slider.drag_ended.connect(func(_bool:bool) -> void:
+	session_slider.drag_started.connect(func() -> void: scribble_audio.play())
+	session_slider.drag_ended.connect(func(_bool:bool) -> void:
 		scribble_audio.stop(); pencil_tick_audio.play()
 	)
-	break_time_slider.value_changed.connect(func(value:float) -> void:
+	session_slider.value_changed.connect(func(value:float) -> void:
 		new_break_time = value * 60
-		_set_break_time_label()
+		_set_session_time_label()
 	)
 
 	# Start the break time
-	$Timer.start(1)
+	timer.start(1)
 
 func _close_window() -> void:
 	page_flip_audio.play()
@@ -231,12 +264,12 @@ func _close_window() -> void:
 	await page_flip_audio.finished
 	queue_free()
 
-func _set_break_time_label() -> void:
-	break_time_label.text = BREAK_TEXT % [new_break_time / 60]
+func _set_session_time_label() -> void:
+	session_label.text = BREAK_TEXT % [new_break_time / 60]
 	if (new_break_time / 60) >= 10 and (new_break_time / 60) < 100:
-		break_time_label.text = str(0)+break_time_label.text
+		session_label.text = str(0)+session_label.text
 	if (new_break_time / 60) < 10:
-		break_time_label.text = str(0)+str(0)+break_time_label.text
+		session_label.text = str(0)+str(0)+session_label.text
 
 func _get_dir_contents(path):
 	var dir = DirAccess.open(path)
@@ -255,7 +288,6 @@ func _get_dir_contents(path):
 var hours:String = str(0)
 var minutes:String = str(0)
 var seconds:String = str(0)
-@onready var test = parent.stats.break_window_timeout_time
 func _on_timer_timeout() -> void:
 	# Counting the timer down
 	if is_timer_countdown:
@@ -267,23 +299,23 @@ func _on_timer_timeout() -> void:
 		if int(seconds) < 10: seconds = str(0)+seconds
 		if countdown_time > 0: timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
 		if countdown_time == 0:
-			# TODO: PLAY SOUND
-			timer_label.self_modulate = Color(1,0,0,1)
-			timer_label.text = "BREAK IS OVER"
-		elif countdown_time == -test:
-			$Timer.stop()
-			_close_window()
-		elif countdown_time >= -test and countdown_time < 0:
-			if timer_label.visible == true: timer_label.visible = false
+			# TODO: PLAY TIMEOUT SOUND
+			timer_label.self_modulate = Color(1,0,0,9.5)
+			timer_label.text = (timeout_message[randi_range(1,timeout_message.size())]).to_upper()
+		elif countdown_time == -(parent.stats.break_window_timeout_time):
+			timer.stop()
+			if parent.stats.break_window_close_on_timeout == true: _close_window()
 			else: timer_label.visible = true
+		elif countdown_time >= -(parent.stats.break_window_timeout_time) and countdown_time < 0:
+			match timer_label.visible:
+				true: timer_label.visible = false
+				false: timer_label.visible = true
 		countdown_time -= 1
-
 	# Counting the timer up
 	else:
 		seconds = str(int(seconds) + 1)
 		if int(seconds) >= 60: seconds = str(0); minutes = str(int(minutes) + 1)
 		if int(minutes) >= 60: minutes = str(0); hours = str(int(hours) + 1)
-
 		var final_hours:String = hours
 		var final_minutes:String = minutes
 		var final_seconds:String = seconds

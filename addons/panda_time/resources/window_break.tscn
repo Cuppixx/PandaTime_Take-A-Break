@@ -1,10 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://b7bhfpfiurkcb"]
+[gd_scene load_steps=11 format=3 uid="uid://b7bhfpfiurkcb"]
 
 [ext_resource type="Script" path="res://addons/panda_time/resources/window_break.gd" id="1_gl7d1"]
 [ext_resource type="Texture2D" uid="uid://c77qs7l3wwd0w" path="res://addons/panda_time/images/AI_animals/dog02.png" id="2_ayv2g"]
-[ext_resource type="AudioStream" uid="uid://dgwgj5ew4swue" path="res://addons/panda_time/sounds/pageflip.mp3" id="3_v042c"]
-[ext_resource type="AudioStream" uid="uid://gymxg0u7pfwr" path="res://addons/panda_time/sounds/scribble_long_strokes.mp3" id="4_j48g0"]
-[ext_resource type="AudioStream" uid="uid://b1iivgtmgqk4l" path="res://addons/panda_time/sounds/pencil_check_mark.mp3" id="5_124wq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4f0h7"]
 
@@ -90,6 +87,7 @@ transparent = true
 script = ExtResource("1_gl7d1")
 
 [node name="Control" type="Control" parent="."]
+modulate = Color(0.137255, 0.137255, 0.137255, 0.552941)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -201,7 +199,7 @@ theme_override_constants/margin_bottom = 1
 layout_mode = 2
 theme_override_constants/separation = -15
 
-[node name="Button" type="Button" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer"]
+[node name="NextButton" type="Button" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -224,7 +222,7 @@ text = "<<<  Next Session  >>>"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HSlider" type="HSlider" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SessionHSlider" type="HSlider" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 self_modulate = Color(1, 1, 0.878431, 1)
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -235,7 +233,7 @@ max_value = 300.0
 step = 5.0
 value = 5.0
 
-[node name="Label" type="Label" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SessionLabel" type="Label" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "000 min"
 
@@ -246,19 +244,5 @@ libraries = {
 "": SubResource("AnimationLibrary_735bd")
 }
 speed_scale = 3.0
-
-[node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_v042c")
-volume_db = 3.0
-pitch_scale = 1.15
-
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_j48g0")
-volume_db = -10.0
-
-[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_124wq")
-volume_db = -18.0
-pitch_scale = 0.88
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

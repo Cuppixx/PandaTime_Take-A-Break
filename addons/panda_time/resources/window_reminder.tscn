@@ -68,8 +68,9 @@ _data = {
 
 [node name="WindowReminder" type="Window"]
 title = "PandaTimeReminder"
-position = Vector2i(20, 36)
+position = Vector2i(-410, 36)
 size = Vector2i(350, 150)
+visible = false
 unresizable = true
 borderless = true
 always_on_top = true
@@ -186,5 +187,9 @@ speed_scale = 2.0
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/DismissButton" to="." method="_on_dismiss_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/SnoozeButton" to="." method="_on_snooze_button_pressed"]
+[connection signal="drag_ended" from="Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_drag_ended"]
+[connection signal="drag_started" from="Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_drag_started"]
 [connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="Control/MarginContainerCollapse/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="picker_created" from="Control/ColorPickerButton" to="." method="_on_color_picker_button_picker_created"]
+[connection signal="popup_closed" from="Control/ColorPickerButton" to="." method="_on_color_picker_button_popup_closed"]
