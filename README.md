@@ -2,6 +2,8 @@
 
 ## Overview
 
+_PandaTime is the big brother of KoalaTime. While KoalaTime aims to be slim, PandaTime provides a more settings heavy experience._
+
 Structure your work time and take a well-deserved break once in a while.
 
 Work time is over! You get a cute image and a fun message to go along with it! It's up to you to decide when to launch your next work session! Increase or decrease your work time as you see fit!

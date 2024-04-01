@@ -55,7 +55,7 @@ columns = 2
 [node name="SessionLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Session Time: 45 min"
+text = " Session Time: 45 min"
 
 [node name="SessionHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -68,7 +68,7 @@ value = 45.0
 
 [node name="SizeLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Size 100 percent"
+text = " Break Window Size 150 percent"
 
 [node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -76,7 +76,7 @@ size_flags_vertical = 4
 min_value = 100.0
 max_value = 200.0
 step = 5.0
-value = 100.0
+value = 150.0
 
 [node name="ExclusiveButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -89,6 +89,7 @@ text = "Hide Break Quotes"
 
 [node name="CountdownButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+button_pressed = true
 text = "Toggle Break Countdown"
 
 [node name="EmptyButton" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
@@ -105,11 +106,11 @@ layout_mode = 2
 size_flags_vertical = 4
 min_value = 1.0
 max_value = 45.0
-value = 1.0
+value = 5.0
 
 [node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Countdown Time: 45 min"
+text = " Countdown Time: 5 min"
 
 [node name="ImageLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -118,6 +119,7 @@ text = " Image Filter Color ---->"
 [node name="ImageColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "IMAGE FILTER"
+color = Color(0, 0.403922, 0.388235, 1)
 
 [node name="UiLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -126,9 +128,11 @@ text = " UI Background Color ---->"
 [node name="UiColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "UI FILTER"
+color = Color(0, 0, 0.254902, 0.411765)
 
 [node name="ReminderButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
+button_pressed = true
 text = "Toggle Reminder"
 
 [node name="EmptyButton2" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
@@ -146,11 +150,11 @@ size_flags_vertical = 4
 min_value = 5.0
 max_value = 295.0
 step = 5.0
-value = 5.0
+value = 30.0
 
 [node name="ReminderLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = " Reminder At"
+text = "Reminder at '30' sec left"
 
 [node name="ResetButton" type="Button" parent="ScrollContainer/Control/VBoxContainer"]
 layout_mode = 2

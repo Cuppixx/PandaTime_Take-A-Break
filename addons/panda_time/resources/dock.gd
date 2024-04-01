@@ -45,7 +45,7 @@ func _ready() -> void:
 			var window_instance:PTwindowSettings = window.instantiate()
 			window_instance.stats = stats
 			window_instance.position = DisplayServer.screen_get_size() / 2 - window_instance.size / 2
-			#DisplayServer.set_native_icon("res://addons/ridiculous_coding/icon_small.ico")
+			DisplayServer.set_native_icon("res://addons/panda_time/resources/images/icon.ico")
 			add_child(window_instance,false,Node.INTERNAL_MODE_FRONT)
 			window_instance.set_current_screen(DisplayServer.window_get_current_screen())
 			window_instance.tree_exiting.connect(func() -> void:
@@ -86,6 +86,7 @@ func _open_new_reminder_window() -> void:
 	window.is_ready = true
 	window.visible = false
 	window.position.y = DisplayServer.screen_get_usable_rect().size.y - window.size.y - 20
+	DisplayServer.set_native_icon("res://addons/panda_time/resources/images/icon.ico")
 	add_child(window)
 	window.set_current_screen(DisplayServer.window_get_current_screen())
 
@@ -103,6 +104,7 @@ func _open_new_session_window() -> void:
 	window.size = Vector2i.ONE * (450 * (stats.break_window_size * 0.01))
 	window.position = DisplayServer.screen_get_size() / 2 - window.size / 2
 	window.new_break_time = stats.break_time
+	DisplayServer.set_native_icon("res://addons/panda_time/resources/images/icon.ico")
 	add_child(window,false,Node.INTERNAL_MODE_FRONT)
 	window.set_current_screen(DisplayServer.window_get_current_screen())
 
