@@ -186,7 +186,7 @@ var timeout_message := {
 }
 
 #region @onready vars
-@onready var parent:Control = $".."
+@onready var parent := $".."
 
 @onready var bg_color:ColorRect = $Control/ColorRect
 @onready var bg_texture:TextureRect = $Control/TextureRect
@@ -205,9 +205,9 @@ var timeout_message := {
 
 @onready var anim_player:AnimationPlayer = $AnimationPlayer
 
-@onready var page_flip_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_PageFlip"
-@onready var scribble_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_Scribble"
-@onready var pencil_tick_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_PencilTick"
+@onready var page_flip_audio:AudioStreamPlayer
+@onready var scribble_audio:AudioStreamPlayer
+@onready var pencil_tick_audio:AudioStreamPlayer
 #endregion
 
 func _notification(what:int) -> void:
@@ -216,46 +216,52 @@ func _notification(what:int) -> void:
 			queue_free()
 		_: pass
 
+var is_ready:bool = false
 func _ready() -> void:
-	# Startup
-	page_flip_audio.play()
-	anim_player.speed_scale = 3
-	anim_player.play("fade_in")
+	if is_ready:
+		page_flip_audio = $"../Audio/AudioStreamPlayer_PageFlip"
+		scribble_audio = $"../Audio/AudioStreamPlayer_Scribble"
+		pencil_tick_audio = $"../Audio/AudioStreamPlayer_PencilTick"
 
-	# Set random Background and Text
-	_get_dir_contents(IMAGE_ROOT_PATH)
-	if file_array.size() > 0: bg_texture.texture = load(file_array[randi_range(0,file_array.size()-1)])
-	if parent.stats.break_window_message == true:
-		message_bg.color = parent.stats.break_window_ui_bg_color
-		message_label.text = message[randi_range(1,message.size())]
-	else:
-		message_label.text = ""
-		message_container.visible = false
+		# Startup
+		page_flip_audio.play()
+		anim_player.speed_scale = 3
+		anim_player.play("fade_in")
 
-	# Load Settings and Data
-	bg_color.color = parent.stats.break_window_image_filter_color
-	settings_bg.color = parent.stats.break_window_ui_bg_color
+		# Set random Background and Text
+		_get_dir_contents(IMAGE_ROOT_PATH)
+		if file_array.size() > 0: bg_texture.texture = load(file_array[randi_range(0,file_array.size()-1)])
+		if parent.stats.break_window_message == true:
+			message_bg.color = parent.stats.break_window_ui_bg_color
+			message_label.text = message[randi_range(1,message.size())]
+		else:
+			message_label.text = ""
+			message_container.visible = false
 
-	is_timer_countdown = parent.stats.break_window_timer_countdown
-	countdown_time = parent.stats.break_window_time
-	timer_label.text = TIMER_TEXT % ["00","00","00"]
+		# Load Settings and Data
+		bg_color.color = parent.stats.break_window_image_filter_color
+		settings_bg.color = parent.stats.break_window_ui_bg_color
 
-	_set_session_time_label()
-	session_slider.value = new_break_time / 60
+		is_timer_countdown = parent.stats.break_window_timer_countdown
+		countdown_time = parent.stats.break_window_time
+		timer_label.text = TIMER_TEXT % ["00","00","00"]
 
-	# Connect Signals
-	next_button.pressed.connect(_close_window)
-	session_slider.drag_started.connect(func() -> void: scribble_audio.play())
-	session_slider.drag_ended.connect(func(_bool:bool) -> void:
-		scribble_audio.stop(); pencil_tick_audio.play()
-	)
-	session_slider.value_changed.connect(func(value:float) -> void:
-		new_break_time = value * 60
 		_set_session_time_label()
-	)
+		session_slider.value = new_break_time / 60
 
-	# Start the break time
-	timer.start(1)
+		# Connect Signals
+		next_button.pressed.connect(_close_window)
+		session_slider.drag_started.connect(func() -> void: scribble_audio.play())
+		session_slider.drag_ended.connect(func(_bool:bool) -> void:
+			scribble_audio.stop(); pencil_tick_audio.play()
+		)
+		session_slider.value_changed.connect(func(value:float) -> void:
+			new_break_time = value * 60
+			_set_session_time_label()
+		)
+
+		# Start the break time
+		timer.start(1)
 
 func _close_window() -> void:
 	page_flip_audio.play()

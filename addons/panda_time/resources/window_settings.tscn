@@ -56,7 +56,7 @@ columns = 2
 [node name="SessionLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = " Session Time: 45 min"
+text = "Session Time: 45 min"
 
 [node name="SessionHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -69,7 +69,7 @@ value = 45.0
 
 [node name="SizeLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = " Break Window Size 150 percent"
+text = "Break Window Size 150 percent"
 
 [node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -103,22 +103,22 @@ layout_mode = 2
 size_flags_vertical = 4
 min_value = 1.0
 max_value = 45.0
-value = 5.0
+value = 8.0
 
 [node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = " Countdown Time: 5 min"
+text = "Countdown Time: 8 min"
 
 [node name="CountdownTimeoutHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 min_value = 1.0
 max_value = 180.0
-value = 3.0
+value = 15.0
 
 [node name="CountdownTimeoutLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Timeout Autoclose: 10 sec"
+text = "Autoclose '15' sec after Timeout"
 
 [node name="ImageLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2

@@ -2,7 +2,7 @@
 class_name PTwindowReminder extends Window
 
 #region @onready vars
-@onready var parent:Control = $".."
+@onready var parent := $".."
 
 @onready var time_label:Label = $Control/MarginContainer/VBoxContainer/Label
 @onready var snooze_slider:HSlider = $Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider
@@ -10,9 +10,9 @@ class_name PTwindowReminder extends Window
 
 @onready var animation_player:AnimationPlayer = $AnimationPlayer
 
-@onready var page_flip_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_PageFlip"
-@onready var scribble_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_Scribble"
-@onready var pencil_tick_audio:AudioStreamPlayer = $"../Audio/AudioStreamPlayer_PencilTick"
+@onready var page_flip_audio:AudioStreamPlayer
+@onready var scribble_audio:AudioStreamPlayer
+@onready var pencil_tick_audio:AudioStreamPlayer
 #endregion
 
 func _notification(what:int) -> void:
@@ -23,6 +23,9 @@ func _notification(what:int) -> void:
 var is_ready:bool = false
 func _ready() -> void:
 	if is_ready:
+		page_flip_audio = $"../Audio/AudioStreamPlayer_PageFlip"
+		scribble_audio = $"../Audio/AudioStreamPlayer_Scribble"
+		pencil_tick_audio = $"../Audio/AudioStreamPlayer_PencilTick"
 		page_flip_audio.play()
 		parent.pt_remaining_time.connect(func(remaining_time:String) -> void:
 			time_label.text = remaining_time.erase(1,3)

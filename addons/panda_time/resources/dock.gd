@@ -96,6 +96,7 @@ func _open_new_session_window() -> void:
 	settings_button.disabled = true
 
 	var window:PTwindowBreak = PT_WINDOW_BREAK.instantiate()
+	window.is_ready = true
 	match stats.break_window_exclusive:
 		true: window.exclusive = false
 		false: window.exclusive = true
