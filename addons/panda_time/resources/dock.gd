@@ -49,8 +49,6 @@ func _ready() -> void:
 			add_child(window_instance,false,Node.INTERNAL_MODE_FRONT)
 			window_instance.set_current_screen(DisplayServer.window_get_current_screen())
 			window_instance.tree_exiting.connect(func() -> void:
-				#var window_instance_old:Window = get_child(0,true)
-				#stats = window_instance_old.stats
 				stats = window_instance.stats
 				settings_button.disabled = false
 			)

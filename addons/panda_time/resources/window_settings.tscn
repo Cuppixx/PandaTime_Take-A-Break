@@ -92,14 +92,10 @@ layout_mode = 2
 button_pressed = true
 text = "Toggle Break Countdown"
 
-[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="CountdownTimeoutButton" type="CheckButton" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_wdlsn")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1y74y")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_1msku")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
-disabled = true
+button_pressed = true
+text = "Timeout Autoclose"
 
 [node name="CountdownHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -111,6 +107,17 @@ value = 5.0
 [node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = " Countdown Time: 5 min"
+
+[node name="CountdownTimeoutHSlider" type="HSlider" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 1.0
+max_value = 180.0
+value = 3.0
+
+[node name="CountdownTimeoutLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Timeout Autoclose: 10 sec"
 
 [node name="ImageLabel" type="Label" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -135,7 +142,7 @@ layout_mode = 2
 button_pressed = true
 text = "Toggle Reminder"
 
-[node name="EmptyButton2" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
+[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/VBoxContainer/GridContainer"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_wdlsn")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_1y74y")

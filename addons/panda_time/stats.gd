@@ -10,9 +10,9 @@ class_name StatsDataPT extends Resource
 @export var break_window_message:bool = true
 
 @export var break_window_timer_countdown:bool = true
-@export var break_window_time:int = 5 * 60 # In seconds
+@export var break_window_time:int = 8 * 60 # In seconds
 @export var break_window_close_on_timeout:bool = true
-@export var break_window_timeout_time:int = 14 # In seconds
+@export var break_window_timeout_time:int = 15 # In seconds
 #auto close and timer for auto close
 
 @export var break_window_custom_image_folder_path:String = "res://addons/panda_time/images/"
