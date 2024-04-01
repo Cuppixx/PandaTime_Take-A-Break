@@ -67,8 +67,8 @@ func _load_settings() -> void:
 	reminder_window_popup_time_label.text = "Reminder at '%.0f' sec left" % [stats.reminder_time]
 
 	audio_button.set_pressed_no_signal(stats.audio_enabled)
-	audio_slider.value = stats.audio_multiplier
-	audio_label.text = "Audio Multiplier: %.1f" % [audio_slider.value]
+	audio_slider.value = stats.audio_addend
+	audio_label.text = "Audio Addend: %.0f" % [audio_slider.value]
 
 func _connect_settings() -> void:
 	session_time_slider.value_changed.connect(func(value:float) -> void:
@@ -121,10 +121,9 @@ func _connect_settings() -> void:
 		stats.audio_enabled = toggled_on
 	)
 	audio_slider.value_changed.connect(func(value:float) -> void:
-		audio_label.text = "Audio Multiplier: %.1f" % [value]
-		stats.audio_multiplier = value
+		audio_label.text = "Audio Addend: %.0f" % [value]
+		stats.audio_addend = int(value)
 	)
-
 
 func _on_reset_button_pressed() -> void:
 	stats = StatsDataPT.new()

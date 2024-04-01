@@ -25,4 +25,4 @@ class_name StatsDataPT extends Resource
 
 # Audio Settings
 @export var audio_enabled:bool = true
-@export var audio_multiplier:float = 1.0
+@export var audio_addend:int = 0

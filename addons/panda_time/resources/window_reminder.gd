@@ -26,7 +26,9 @@ func _ready() -> void:
 		page_flip_audio = $"../Audio/AudioStreamPlayer_PageFlip"
 		scribble_audio = $"../Audio/AudioStreamPlayer_Scribble"
 		pencil_tick_audio = $"../Audio/AudioStreamPlayer_PencilTick"
-		page_flip_audio.play()
+		if parent.stats.audio_enabled:
+			page_flip_audio.volume_db = 0 + parent.stats.audio_addend
+			page_flip_audio.play()
 		parent.pt_remaining_time.connect(func(remaining_time:String) -> void:
 			time_label.text = remaining_time.erase(1,3)
 		)
@@ -43,9 +45,12 @@ func _ready() -> void:
 		snooze_slider.value = parent.stats.snooze_time
 
 func _collapse_window() -> void:
-	page_flip_audio.play()
+	if parent.stats.audio_enabled:
+		page_flip_audio.volume_db = 0 + parent.stats.audio_addend
+		page_flip_audio.play()
 	animation_player.play("slide_out")
-	await page_flip_audio.finished
+	if parent.stats.audio_enabled: await page_flip_audio.finished
+	else: await animation_player.animation_finished
 	queue_free()
 
 func _set_snooze_time_label(snooze_time:int) -> void:
@@ -64,17 +69,27 @@ func _on_snooze_button_pressed() -> void:
 func _on_quit_button_pressed() -> void:
 	_collapse_window()
 
-func _on_h_slider_drag_started() -> void: scribble_audio.play()
+func _on_h_slider_drag_started() -> void:
+	if parent.stats.audio_enabled:
+		scribble_audio.volume_db = -15 + parent.stats.audio_addend
+		scribble_audio.play()
 
 func _on_h_slider_drag_ended(value_changed: bool) -> void:
-	scribble_audio.stop(); pencil_tick_audio.play()
+	scribble_audio.stop()
+	if parent.stats.audio_enabled:
+		pencil_tick_audio.volume_db = -23 + parent.stats.audio_addend
+		pencil_tick_audio.play()
 
 func _on_h_slider_value_changed(value: float) -> void:
 	parent.stats.snooze_time = value
 	_set_snooze_time_label(value)
 
 func _on_color_picker_button_picker_created() -> void:
-	pencil_tick_audio.play()
+	if parent.stats.audio_enabled:
+		pencil_tick_audio.volume_db = -23 + parent.stats.audio_addend
+		pencil_tick_audio.play()
 
 func _on_color_picker_button_popup_closed() -> void:
-	pencil_tick_audio.play()
+	if parent.stats.audio_enabled:
+		pencil_tick_audio.volume_db = -23 + parent.stats.audio_addend
+		pencil_tick_audio.play()

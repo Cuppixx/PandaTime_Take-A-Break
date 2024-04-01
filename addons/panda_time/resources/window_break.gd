@@ -224,7 +224,9 @@ func _ready() -> void:
 		pencil_tick_audio = $"../Audio/AudioStreamPlayer_PencilTick"
 
 		# Startup
-		page_flip_audio.play()
+		if parent.stats.audio_enabled:
+			page_flip_audio.volume_db = 3 + parent.stats.audio_addend
+			page_flip_audio.play()
 		anim_player.speed_scale = 3
 		anim_player.play("fade_in")
 
@@ -251,9 +253,16 @@ func _ready() -> void:
 
 		# Connect Signals
 		next_button.pressed.connect(_close_window)
-		session_slider.drag_started.connect(func() -> void: scribble_audio.play())
+		session_slider.drag_started.connect(func() -> void:
+			if parent.stats.audio_enabled:
+				scribble_audio.volume_db = -10 + parent.stats.audio_addend
+				scribble_audio.play()
+		)
 		session_slider.drag_ended.connect(func(_bool:bool) -> void:
-			scribble_audio.stop(); pencil_tick_audio.play()
+			scribble_audio.stop()
+			if parent.stats.audio_enabled:
+				pencil_tick_audio.volume_db = -18 + parent.stats.audio_addend
+				pencil_tick_audio.play()
 		)
 		session_slider.value_changed.connect(func(value:float) -> void:
 			new_break_time = value * 60
@@ -264,10 +273,13 @@ func _ready() -> void:
 		timer.start(1)
 
 func _close_window() -> void:
-	page_flip_audio.play()
+	if parent.stats.audio_enabled:
+		page_flip_audio.volume_db = 3 + parent.stats.audio_addend
+		page_flip_audio.play()
 	anim_player.speed_scale = 11
 	anim_player.play("fade_out")
-	await page_flip_audio.finished
+	if parent.stats.audio_enabled: await page_flip_audio.finished
+	else: await anim_player.animation_finished
 	queue_free()
 
 func _set_session_time_label() -> void:
