@@ -13,9 +13,7 @@ class_name StatsDataPT extends Resource
 @export var break_window_time:int = 8 * 60 # In seconds
 @export var break_window_close_on_timeout:bool = true
 @export var break_window_timeout_time:int = 15 # In seconds
-#auto close and timer for auto close
 
-@export var break_window_custom_image_folder_path:String = "res://addons/panda_time/images/"
 @export var break_window_image_filter_color:Color = Color.html("006763")
 @export var break_window_ui_bg_color:Color = Color.html("00004169")
 
