@@ -3,26 +3,26 @@ class_name PTwindowSettings extends Window
 
 var stats:StatsDataPT = StatsDataPT.new()
 
-@onready var session_label = $ScrollContainer/Control/VBoxContainer/GridContainer/SessionLabel
-@onready var session_time_slider = $ScrollContainer/Control/VBoxContainer/GridContainer/SessionHSlider
-@onready var break_window_exclusive_button = $ScrollContainer/Control/VBoxContainer/GridContainer/ExclusiveButton
-@onready var break_window_message_button = $ScrollContainer/Control/VBoxContainer/GridContainer/MessageButton
-@onready var break_window_size_label = $ScrollContainer/Control/VBoxContainer/GridContainer/SizeLabel
-@onready var break_window_size_slider = $ScrollContainer/Control/VBoxContainer/GridContainer/SizeHSlider
-@onready var break_window_countdown_button = $ScrollContainer/Control/VBoxContainer/GridContainer/CountdownButton
-@onready var break_window_countdown_label = $ScrollContainer/Control/VBoxContainer/GridContainer/CountdownLabel
-@onready var break_window_countdown_slider = $ScrollContainer/Control/VBoxContainer/GridContainer/CountdownHSlider
-@onready var break_window_countdown_timeout_button = $ScrollContainer/Control/VBoxContainer/GridContainer/CountdownTimeoutButton
-@onready var break_window_countdown_timeout_label = $ScrollContainer/Control/VBoxContainer/GridContainer/CountdownTimeoutLabel
-@onready var break_window_countdown_timeout_slider = $ScrollContainer/Control/VBoxContainer/GridContainer/CountdownTimeoutHSlider
-@onready var break_window_image_filter_colorpicker = $ScrollContainer/Control/VBoxContainer/GridContainer/ImageColorPickerButton
-@onready var break_window_ui_filter_colorpicker = $ScrollContainer/Control/VBoxContainer/GridContainer/UiColorPickerButton
+@onready var session_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/SessionLabel
+@onready var session_time_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/SessionHSlider
+@onready var break_window_exclusive_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ExclusiveButton
+@onready var break_window_message_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/MessageButton
+@onready var break_window_size_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/SizeLabel
+@onready var break_window_size_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/SizeHSlider
+@onready var break_window_countdown_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownButton
+@onready var break_window_countdown_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownLabel
+@onready var break_window_countdown_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownHSlider
+@onready var break_window_countdown_timeout_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownTimeoutButton
+@onready var break_window_countdown_timeout_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownTimeoutLabel
+@onready var break_window_countdown_timeout_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownTimeoutHSlider
+@onready var break_window_image_filter_colorpicker = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ImageColorPickerButton
+@onready var break_window_ui_filter_colorpicker = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/UiColorPickerButton
 
-@onready var reminder_window_enabled_butoon = $ScrollContainer/Control/VBoxContainer/GridContainer/ReminderButton
-@onready var reminder_window_popup_time_label = $ScrollContainer/Control/VBoxContainer/GridContainer/ReminderLabel
-@onready var reminder_window_popup_time_slider = $ScrollContainer/Control/VBoxContainer/GridContainer/ReminderHSlider
+@onready var reminder_window_enabled_butoon = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ReminderButton
+@onready var reminder_window_popup_time_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ReminderLabel
+@onready var reminder_window_popup_time_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ReminderHSlider
 
-@onready var reset_button = $ScrollContainer/Control/VBoxContainer/ResetButton
+@onready var reset_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/ResetButton
 
 func _notification(what:int) -> void:
 	match what:
