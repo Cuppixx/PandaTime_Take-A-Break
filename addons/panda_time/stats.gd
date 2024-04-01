@@ -22,3 +22,7 @@ class_name StatsDataPT extends Resource
 @export var reminder_time:int = 0.5 * 60 # In seconds
 @export var reminder_window_bg_color:Color = Color.html("00004169")
 @export var snooze_time:int = 120 # In seconds
+
+# Audio Settings
+@export var audio_enabled:bool = true
+@export var audio_multiplier:float = 1.0

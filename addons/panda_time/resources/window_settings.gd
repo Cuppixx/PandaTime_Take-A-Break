@@ -9,18 +9,22 @@ var stats:StatsDataPT = StatsDataPT.new()
 @onready var break_window_message_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/MessageButton
 @onready var break_window_size_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/SizeLabel
 @onready var break_window_size_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/SizeHSlider
-@onready var break_window_countdown_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownButton
-@onready var break_window_countdown_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownLabel
-@onready var break_window_countdown_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownHSlider
-@onready var break_window_countdown_timeout_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownTimeoutButton
-@onready var break_window_countdown_timeout_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownTimeoutLabel
-@onready var break_window_countdown_timeout_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/CountdownTimeoutHSlider
-@onready var break_window_image_filter_colorpicker = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ImageColorPickerButton
-@onready var break_window_ui_filter_colorpicker = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/UiColorPickerButton
+@onready var break_window_countdown_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2/CountdownButton
+@onready var break_window_countdown_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2/CountdownLabel
+@onready var break_window_countdown_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2/CountdownHSlider
+@onready var break_window_countdown_timeout_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2/CountdownTimeoutButton
+@onready var break_window_countdown_timeout_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2/CountdownTimeoutLabel
+@onready var break_window_countdown_timeout_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2/CountdownTimeoutHSlider
+@onready var break_window_image_filter_colorpicker = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer3/ImageColorPickerButton
+@onready var break_window_ui_filter_colorpicker = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer3/UiColorPickerButton
 
-@onready var reminder_window_enabled_butoon = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ReminderButton
-@onready var reminder_window_popup_time_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ReminderLabel
-@onready var reminder_window_popup_time_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer/ReminderHSlider
+@onready var reminder_window_enabled_butoon = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4/ReminderButton
+@onready var reminder_window_popup_time_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4/ReminderLabel
+@onready var reminder_window_popup_time_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4/ReminderHSlider
+
+@onready var audio_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5/AudioButton
+@onready var audio_slider = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5/AudioHSlider
+@onready var audio_label = $ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5/Label
 
 @onready var reset_button = $ScrollContainer/Control/MarginContainer/VBoxContainer/ResetButton
 
@@ -46,13 +50,13 @@ func _load_settings() -> void:
 	break_window_countdown_button.set_pressed_no_signal(stats.break_window_timer_countdown)
 	break_window_countdown_slider.value = stats.break_window_time / 60
 	break_window_countdown_slider.editable = stats.break_window_timer_countdown
-	break_window_countdown_label.text = "Countdown Time: %.0f min" % [break_window_countdown_slider.value]
+	break_window_countdown_label.text = " Countdown Time: %.0f min" % [break_window_countdown_slider.value]
 	break_window_countdown_timeout_button.set_pressed_no_signal(stats.break_window_close_on_timeout)
 	if break_window_countdown_button.button_pressed == false:
 		break_window_countdown_timeout_button.disabled = true
 	break_window_countdown_timeout_slider.value = stats.break_window_timeout_time
 	break_window_countdown_timeout_slider.editable = stats.break_window_close_on_timeout
-	break_window_countdown_timeout_label.text = "Autoclose '%.0f' sec after Timeout" % [break_window_countdown_timeout_slider.value]
+	break_window_countdown_timeout_label.text = " Autoclose '%.0f' sec after Timeout" % [break_window_countdown_timeout_slider.value]
 
 	break_window_image_filter_colorpicker.color = stats.break_window_image_filter_color
 	break_window_ui_filter_colorpicker.color = stats.break_window_ui_bg_color
@@ -62,6 +66,9 @@ func _load_settings() -> void:
 	reminder_window_popup_time_slider.value = stats.reminder_time
 	reminder_window_popup_time_label.text = "Reminder at '%.0f' sec left" % [stats.reminder_time]
 
+	audio_button.set_pressed_no_signal(stats.audio_enabled)
+	audio_slider.value = stats.audio_multiplier
+	audio_label.text = "Audio Multiplier: %.1f" % [audio_slider.value]
 
 func _connect_settings() -> void:
 	session_time_slider.value_changed.connect(func(value:float) -> void:
@@ -86,7 +93,7 @@ func _connect_settings() -> void:
 		break_window_countdown_timeout_slider.editable = toggled_on
 	)
 	break_window_countdown_slider.value_changed.connect(func(value:float) -> void:
-		break_window_countdown_label.text = "Countdown Time: %.0f min" % [value]
+		break_window_countdown_label.text = " Countdown Time: %.0f min" % [value]
 		stats.break_window_time = value * 60
 	)
 	break_window_countdown_timeout_button.toggled.connect(func(toggled_on:bool) -> void:
@@ -94,7 +101,7 @@ func _connect_settings() -> void:
 		break_window_countdown_timeout_slider.editable = toggled_on
 	)
 	break_window_countdown_timeout_slider.value_changed.connect(func(value:float) -> void:
-		break_window_countdown_timeout_label.text = "Autoclose '%.0f' sec after Timeout" % [value]
+		break_window_countdown_timeout_label.text = " Autoclose '%.0f' sec after Timeout" % [value]
 		stats.break_window_timeout_time = int(value)
 	)
 	break_window_image_filter_colorpicker.color_changed.connect(func(color:Color) -> void:
@@ -109,6 +116,13 @@ func _connect_settings() -> void:
 	reminder_window_popup_time_slider.value_changed.connect(func(value:float) -> void:
 		reminder_window_popup_time_label.text = "Reminder at '%.0f' sec left" % [value]
 		stats.reminder_time = int(value)
+	)
+	audio_button.toggled.connect(func(toggled_on:bool) -> void:
+		stats.audio_enabled = toggled_on
+	)
+	audio_slider.value_changed.connect(func(value:float) -> void:
+		audio_label.text = "Audio Multiplier: %.1f" % [value]
+		stats.audio_multiplier = value
 	)
 
 
