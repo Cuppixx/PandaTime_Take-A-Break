@@ -20,6 +20,7 @@ const TIMER_TEXT:String = "%s:%s:%s"
 var snoozed:bool = false
 var snooze_time:int = 0
 var dismissed:bool = false
+var is_settings_window_open:bool = false
 
 var plugin_is_running:bool = false
 func _ready() -> void:
@@ -41,6 +42,7 @@ func _ready() -> void:
 		)
 		settings_button.pressed.connect(func() -> void:
 			settings_button.disabled = true
+			is_settings_window_open = true
 			var window:Resource = load("res://addons/panda_time/resources/window_settings.tscn")
 			var window_instance:PTwindowSettings = window.instantiate()
 			window_instance.stats = stats
@@ -51,6 +53,7 @@ func _ready() -> void:
 			window_instance.tree_exiting.connect(func() -> void:
 				stats = window_instance.stats
 				settings_button.disabled = false
+				is_settings_window_open = false
 			)
 		)
 
@@ -78,6 +81,7 @@ func _on_break_timer_timeout() -> void:
 	stats.break_time_counter -= 1
 
 signal pt_remaining_time(remaining_time:String)
+signal pt_free_reminder
 func _open_new_reminder_window() -> void:
 	var window:PTwindowReminder = load("res://addons/panda_time/resources/window_reminder.tscn").instantiate()
 
@@ -90,6 +94,7 @@ func _open_new_reminder_window() -> void:
 
 func _open_new_session_window() -> void:
 	timer.stop()
+	pt_free_reminder.emit()
 
 	skip_button.disabled = true
 	stop_button.disabled = true
@@ -117,7 +122,7 @@ func _open_new_session_window() -> void:
 		timer.start(1)
 		skip_button.disabled = false
 		stop_button.disabled = false
-		settings_button.disabled = false
+		if !is_settings_window_open: settings_button.disabled = false
 	)
 
 func write_savefile() -> void:

@@ -32,6 +32,7 @@ func _ready() -> void:
 		parent.pt_remaining_time.connect(func(remaining_time:String) -> void:
 			time_label.text = remaining_time.erase(1,3)
 		)
+		parent.pt_free_reminder.connect(_collapse_window)
 		animation_player.play("slide_in")
 		var bg_color_picker:ColorPickerButton = $Control/ColorPickerButton
 		var bg_color_rect:ColorRect = $Control/ColorRect
