@@ -1,8 +1,8 @@
 class_name StatsDataPT extends Resource
 
 # Dock / Global Settings
-@export var break_time_counter:int = 45 * 60 # In seconds
-@export var break_time:int = 45 * 60 # In seconds
+@export var session_time_counter:int = 45 * 60 # In seconds
+@export var session_time:int = 45 * 60 # In seconds
 
 # Break Window Settings
 @export var break_window_exclusive:bool = false

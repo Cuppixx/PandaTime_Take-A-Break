@@ -108,7 +108,7 @@ theme_override_constants/margin_right = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer"]
+[node name="TimeLabel" type="Label" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "00:00"
@@ -126,7 +126,7 @@ text = "Snooze"
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HSlider" type="HSlider" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SnoozeHSlider" type="HSlider" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 7
 size_flags_vertical = 6
@@ -135,7 +135,7 @@ max_value = 300.0
 step = 30.0
 value = 30.0
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SnoozeLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "05:00"
@@ -187,9 +187,9 @@ speed_scale = 2.0
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/DismissButton" to="." method="_on_dismiss_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/SnoozeButton" to="." method="_on_snooze_button_pressed"]
-[connection signal="drag_ended" from="Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_drag_ended"]
-[connection signal="drag_started" from="Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_drag_started"]
-[connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="drag_ended" from="Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeHSlider" to="." method="_on_h_slider_drag_ended"]
+[connection signal="drag_started" from="Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeHSlider" to="." method="_on_h_slider_drag_started"]
+[connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeHSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="Control/MarginContainerCollapse/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="picker_created" from="Control/ColorPickerButton" to="." method="_on_color_picker_button_picker_created"]
 [connection signal="popup_closed" from="Control/ColorPickerButton" to="." method="_on_color_picker_button_popup_closed"]

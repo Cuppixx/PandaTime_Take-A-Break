@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_c7ldf")
 
-[node name="BreakTimer" type="Timer" parent="."]
+[node name="SessionTimer" type="Timer" parent="."]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -63,4 +63,4 @@ stream = ExtResource("4_avukd")
 volume_db = -18.0
 pitch_scale = 0.88
 
-[connection signal="timeout" from="BreakTimer" to="." method="_on_break_timer_timeout"]
+[connection signal="timeout" from="SessionTimer" to="." method="_on_break_timer_timeout"]

@@ -1,16 +1,23 @@
 @tool
 class_name PTwindowBreak extends Window
 
-const TIMER_TEXT:String = "%s : %s : %s"
-const BREAK_TEXT:String = "%d min"
-const TIMEOUT_TEXT:String = "BREAK IS OVER"
 const IMAGE_ROOT_PATH:String = "res://addons/panda_time/images/"
 const IMAGE_EXTENSION:String = "png"
-const ERR:String = "--> KT: An error occurred when trying to access the path!"
+
+const ERR:String = "--> PT: An error occurred when trying to access the path!"
+
+const TIMER_TEXT:String = "%s : %s : %s"
+const SESSION_TEXT:String = "%d min"
+const TIMEOUT_TEXT:String = "BREAK IS OVER"
+
+const BASE_DB_PAGE_FLIP:int = 3
+const BASE_DB_SCRIBBLE:int = -10
+const BASE_DB_PENCIL_TICK:int = -18
+
 var file_array = []
 var is_timer_countdown:bool = false
 var countdown_time:int = 5 * 60 # In seconds
-var new_break_time:int
+var new_session_time:int
 
 var message := {
 	1:   "Stretch those legs!",
@@ -212,8 +219,7 @@ var timeout_message := {
 
 func _notification(what:int) -> void:
 	match what:
-		NOTIFICATION_WM_CLOSE_REQUEST:
-			queue_free()
+		NOTIFICATION_WM_CLOSE_REQUEST: queue_free()
 		_: pass
 
 var is_ready:bool = false
@@ -225,7 +231,7 @@ func _ready() -> void:
 
 		# Startup
 		if parent.stats.audio_enabled:
-			page_flip_audio.volume_db = 3 + parent.stats.audio_addend
+			page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
 			page_flip_audio.play()
 		anim_player.speed_scale = 3
 		anim_player.play("fade_in")
@@ -249,23 +255,23 @@ func _ready() -> void:
 		timer_label.text = TIMER_TEXT % ["00","00","00"]
 
 		_set_session_time_label()
-		session_slider.value = new_break_time / 60
+		session_slider.value = new_session_time / 60
 
 		# Connect Signals
 		next_button.pressed.connect(_close_window)
 		session_slider.drag_started.connect(func() -> void:
 			if parent.stats.audio_enabled:
-				scribble_audio.volume_db = -10 + parent.stats.audio_addend
+				scribble_audio.volume_db = BASE_DB_SCRIBBLE + parent.stats.audio_addend
 				scribble_audio.play()
 		)
 		session_slider.drag_ended.connect(func(_bool:bool) -> void:
 			scribble_audio.stop()
 			if parent.stats.audio_enabled:
-				pencil_tick_audio.volume_db = -18 + parent.stats.audio_addend
+				pencil_tick_audio.volume_db = BASE_DB_PENCIL_TICK + parent.stats.audio_addend
 				pencil_tick_audio.play()
 		)
 		session_slider.value_changed.connect(func(value:float) -> void:
-			new_break_time = value * 60
+			new_session_time = value * 60
 			_set_session_time_label()
 		)
 
@@ -274,20 +280,21 @@ func _ready() -> void:
 
 func _close_window() -> void:
 	if parent.stats.audio_enabled:
-		page_flip_audio.volume_db = 3 + parent.stats.audio_addend
+		page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
 		page_flip_audio.play()
+
 	anim_player.speed_scale = 11
 	anim_player.play("fade_out")
+
 	if parent.stats.audio_enabled: await page_flip_audio.finished
 	else: await anim_player.animation_finished
 	queue_free()
 
 func _set_session_time_label() -> void:
-	session_label.text = BREAK_TEXT % [new_break_time / 60]
-	if (new_break_time / 60) >= 10 and (new_break_time / 60) < 100:
+	session_label.text = SESSION_TEXT % [new_session_time / 60]
+	if (new_session_time / 60) < 10: session_label.text = str(0)+str(0)+session_label.text
+	elif (new_session_time / 60) >= 10 and (new_session_time / 60) < 100:
 		session_label.text = str(0)+session_label.text
-	if (new_break_time / 60) < 10:
-		session_label.text = str(0)+str(0)+session_label.text
 
 func _get_dir_contents(path):
 	var dir = DirAccess.open(path)

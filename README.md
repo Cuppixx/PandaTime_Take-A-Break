@@ -13,7 +13,9 @@ Want to [display your own png files](#display-your-own-png-files)!?
 ![PandaTime](readme-example.png)
 
 ## TODO / What I want to do
-- _No pending tasks_
+- _Add Sound for Break Timeout_
+- _Fix ReminderWindow stealing focus_
+- _Fix ReminderWindow wrong position on Secondary-Monitor_
 
 ## Installation
 
