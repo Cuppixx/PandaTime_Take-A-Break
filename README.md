@@ -81,6 +81,8 @@ Check out and download the amazing [Godot Engine](https://godotengine.org/downlo
 
 [KoalaTime_Take_A_Break](https://github.com/Cuppixx/KoalaTime_Take-A-Break)
 
+[PandaTime_Take_A_Break](https://github.com/Cuppixx/PandaTime_Take-A-Break)
+
 More fun links to come ....
 
 ### Reference and Template Sources
@@ -88,3 +90,4 @@ More fun links to come ....
 | Authors    | Resources   |
 | ---------- | ----------- |
 | chukusuccess -Chuku Success-     | [Coding-Break-Extension](https://github.com/chukusuccess/Coding-Break-Extension) |
+| Cuppixx		           | [KoalaTime_Take_A_Break](https://github.com/Cuppixx/KoalaTime_Take-A-Break)      |
