@@ -16,6 +16,7 @@ Want to [display your own png files](#display-your-own-png-files)!?
 - _Add Sound for Break Timeout_
 - _Fix ReminderWindow stealing focus_
 - _Fix ReminderWindow wrong position on Secondary-Monitor_
+- _Make Settings Window use Editor Color Theme_
 
 ## Installation
 
