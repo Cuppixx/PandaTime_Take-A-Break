@@ -42,21 +42,10 @@ func _notification(what:int) -> void:
 		NOTIFICATION_WM_CLOSE_REQUEST: queue_free()
 		_: pass
 
-func reverse_gamma_correct(color: Color) -> Color:
-	return Color(
-		pow(color.r, 1.200),
-		pow(color.g, 1.311),
-		pow(color.b, 1.649),
-		color.a
-	)
-
 func _ready() -> void:
-	#Color(0.145,0.145,0.145) / 252525
-	var editor_settings := EditorSettings.new()
-	var editor_theme_color := editor_settings.get("interface/theme/base_color")
-	print(editor_theme_color)
-	$ColorRect.color = reverse_gamma_correct(editor_theme_color)
-	print($ColorRect.color)
+	var editor_settings:EditorSettings = EditorInterface.get_editor_settings()
+	var interface_base_color := editor_settings.get_setting("interface/theme/base_color")
+	$ColorRect.color = interface_base_color
 
 	_load_settings()
 	_connect_settings()
