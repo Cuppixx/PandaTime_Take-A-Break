@@ -3,10 +3,10 @@ class_name PandaTimeDock extends Control
 
 #region @onready vars
 @onready var timer:Timer = $SessionTimer
-@onready var timer_label:Label = $VBoxContainer/TimerLabel
-@onready var skip_button:TextureButton = $VBoxContainer/HBoxContainer/SkipButton
-@onready var stop_button:TextureButton = $VBoxContainer/HBoxContainer/StopButton
-@onready var settings_button:TextureButton = $VBoxContainer/HBoxContainer/SettingsButton
+@onready var timer_label:Label = $MarginContainer/VBoxContainer/TimerLabel
+@onready var skip_button:TextureButton = $MarginContainer/VBoxContainer/SkipButton
+@onready var stop_button:TextureButton = $MarginContainer/VBoxContainer/StopButton
+@onready var settings_button:TextureButton = $MarginContainer/VBoxContainer/SettingsButton
 #endregion
 
 # Signals
