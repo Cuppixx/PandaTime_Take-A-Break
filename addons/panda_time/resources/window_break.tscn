@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://b7bhfpfiurkcb"]
+[gd_scene load_steps=12 format=3 uid="uid://b7bhfpfiurkcb"]
 
 [ext_resource type="Script" path="res://addons/panda_time/resources/window_break.gd" id="1_gl7d1"]
 [ext_resource type="Texture2D" uid="uid://c77qs7l3wwd0w" path="res://addons/panda_time/images/AI_animals/dog02.png" id="2_ayv2g"]
+[ext_resource type="AudioStream" uid="uid://cs6ue8roqhf2e" path="res://addons/panda_time/sounds/ticking-clock_1-27477.mp3" id="3_ufyfm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4f0h7"]
 
@@ -166,8 +167,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 0.933333)
 theme_override_colors/font_shadow_color = Color(0.141176, 0.141176, 0.141176, 0.909804)
-theme_override_constants/shadow_offset_x = 5
-theme_override_constants/shadow_offset_y = 4
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 3
 theme_override_font_sizes/font_size = 58
 text = "00 : 39 : 34"
 
@@ -245,5 +246,11 @@ libraries = {
 "": SubResource("AnimationLibrary_735bd")
 }
 speed_scale = 3.0
+
+[node name="AudioPlayer1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ufyfm")
+volume_db = -5.0
+pitch_scale = 0.88
+bus = &"pTimeAudio"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -4,9 +4,9 @@ class_name PandaTimeDock extends Control
 #region @onready vars
 @onready var timer:Timer = $SessionTimer
 @onready var timer_label:Label = $VBoxContainer/TimerLabel
-@onready var skip_button:Button = $VBoxContainer/HBoxContainer/SkipButton
-@onready var stop_button:Button = $VBoxContainer/HBoxContainer/StopButton
-@onready var settings_button:Button = $VBoxContainer/SettingsButton
+@onready var skip_button:TextureButton = $VBoxContainer/HBoxContainer/SkipButton
+@onready var stop_button:TextureButton = $VBoxContainer/HBoxContainer/StopButton
+@onready var settings_button:TextureButton = $VBoxContainer/HBoxContainer/SettingsButton
 #endregion
 
 # Signals
@@ -45,13 +45,11 @@ func _ready() -> void:
 		timer.start(1)
 
 		skip_button.pressed.connect(_open_new_session_window)
-		stop_button.pressed.connect(func() -> void:
-			match timer.paused:
-				true: timer.paused = false
-				false: timer.paused = true
+		stop_button.toggled.connect(func(toggled:bool) -> void:
+			timer.paused = toggled
 		)
 		settings_button.pressed.connect(func() -> void:
-			settings_button.disabled = true
+			settings_button.set_disabled_custom(true)
 			is_settings_window_open = true
 
 			var window:Resource = load("res://addons/panda_time/resources/window_settings.tscn")
@@ -66,7 +64,7 @@ func _ready() -> void:
 
 			window_instance.tree_exiting.connect(func() -> void:
 				stats = window_instance.stats
-				settings_button.disabled = false
+				settings_button.set_disabled_custom(false)
 				is_settings_window_open = false
 			)
 		)
@@ -109,9 +107,9 @@ func _open_new_session_window() -> void:
 	timer.stop()
 	pt_free_reminder.emit()
 
-	skip_button.disabled = true
-	stop_button.disabled = true
-	settings_button.disabled = true
+	skip_button.set_disabled_custom(true)
+	stop_button.set_disabled_custom(true)
+	settings_button.set_disabled_custom(true)
 
 	var window:PTwindowBreak = PT_WINDOW_BREAK.instantiate()
 
@@ -137,9 +135,9 @@ func _open_new_session_window() -> void:
 		timer.paused = false
 		timer.start(1)
 
-		skip_button.disabled = false
-		stop_button.disabled = false
-		if !is_settings_window_open: settings_button.disabled = false
+		skip_button.set_disabled_custom(false)
+		stop_button.set_disabled_custom(false)
+		if !is_settings_window_open: settings_button.set_disabled_custom(false)
 	)
 
 func write_savefile() -> void: ResourceSaver.save(stats,ROOT_PATH+FILE_NAME,0)

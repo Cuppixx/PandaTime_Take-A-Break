@@ -44,7 +44,7 @@ func _notification(what:int) -> void:
 
 func _ready() -> void:
 	var editor_settings:EditorSettings = EditorInterface.get_editor_settings()
-	var interface_base_color := editor_settings.get_setting("interface/theme/base_color")
+	var interface_base_color:Color = editor_settings.get_setting("interface/theme/base_color")
 	$ColorRect.color = interface_base_color
 
 	_load_settings()

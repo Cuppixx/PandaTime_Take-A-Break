@@ -324,7 +324,7 @@ func _on_timer_timeout() -> void:
 		if int(seconds) < 10: seconds = str(0)+seconds
 		if countdown_time > 0: timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
 		if countdown_time == 0:
-			# TODO: PLAY TIMEOUT SOUND
+			$AudioPlayer1.play()
 			timer_label.self_modulate = Color(1,0,0,9.5)
 			timer_label.text = (timeout_message[randi_range(1,timeout_message.size())]).to_upper()
 		elif countdown_time == -(parent.stats.break_window_timeout_time):

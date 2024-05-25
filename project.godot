@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Panda Time Addon"
-config/version="1.0.1"
-config/tags=PackedStringArray("addon")
+config/version="1.1.2"
+config/tags=PackedStringArray("addon", "under_development")
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.png"
 

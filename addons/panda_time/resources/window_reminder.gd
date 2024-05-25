@@ -4,6 +4,7 @@ class_name PTwindowReminder extends Window
 #region @onready vars
 @onready var parent := $".."
 
+@onready var bg_color_rect:ColorRect = $Control/ColorRect
 @onready var time_label:Label = $Control/MarginContainer/VBoxContainer/TimeLabel
 @onready var snooze_slider:HSlider = $Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeHSlider
 @onready var snooze_label:Label = $Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeLabel
@@ -43,17 +44,27 @@ func _ready() -> void:
 
 		anim_player.play("slide_in")
 
-		var bg_color_pick:ColorPickerButton = $Control/ColorPickerButton
-		var bg_color_rect:ColorRect = $Control/ColorRect
-		bg_color_rect.color = parent.stats.reminder_window_bg_color
-		bg_color_pick.color = parent.stats.reminder_window_bg_color
-		bg_color_pick.color_changed.connect(func(color:Color) -> void:
-			bg_color_rect.color = color
-			parent.stats.reminder_window_bg_color = color
-		)
-
 		_set_snooze_time_label(parent.stats.snooze_time)
 		snooze_slider.value = parent.stats.snooze_time
+
+		# 252525 569eff
+		var editor_settings:EditorSettings = EditorInterface.get_editor_settings()
+		var interface_base_color:Color = editor_settings.get_setting("interface/theme/base_color")
+		#print(interface_base_color)
+
+		$Control/MarginContainerCollapse/ColorRect.color = interface_base_color
+
+		var interface_accent_color:Color = editor_settings.get_setting("interface/theme/accent_color")
+		interface_accent_color.a = 0.05
+		#print(interface_accent_color)
+		bg_color_rect.color = interface_base_color.blend(interface_accent_color)
+		#print(bg_color_rect.color)
+		#print(bg_color_rect.color.get_luminance())
+		if bg_color_rect.color.get_luminance() <= 0.5:
+			bg_color_rect.color = interface_base_color.lightened(0.125)
+		else:
+			bg_color_rect.color = interface_base_color.darkened(0.125)
+		bg_color_rect.color = bg_color_rect.color.clamp(Color(0.2,0.2,0.2),Color(0.8,0.8,0.8))
 
 func _collapse_window() -> void:
 	if parent.stats.audio_enabled:
@@ -93,13 +104,3 @@ func _on_h_slider_drag_ended(value_changed: bool) -> void:
 func _on_h_slider_value_changed(value: float) -> void:
 	parent.stats.snooze_time = value
 	_set_snooze_time_label(value)
-
-func _on_color_picker_button_picker_created() -> void:
-	if parent.stats.audio_enabled:
-		pencil_tick_audio.volume_db = BASE_DB_PENCIL_TICK + parent.stats.audio_addend
-		pencil_tick_audio.play()
-
-func _on_color_picker_button_popup_closed() -> void:
-	if parent.stats.audio_enabled:
-		pencil_tick_audio.volume_db = BASE_DB_PENCIL_TICK + parent.stats.audio_addend
-		pencil_tick_audio.play()

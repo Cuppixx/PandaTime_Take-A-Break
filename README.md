@@ -16,7 +16,6 @@ Want to [display your own png files](#display-your-own-png-files)!?
 - _Add Sound for Break Timeout_
 - _Fix ReminderWindow stealing focus_
 - _Fix ReminderWindow wrong position on Secondary-Monitor_
-- _Make Settings Window use Editor Color Theme_
 
 ## Installation
 
@@ -58,7 +57,7 @@ res://
 			images
 ```
 
-... copy and paste you own **png** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
+... copy and paste your own **png** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
 
 **Hope you like it!**
 

@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://xysnoajbdhqy"]
+[gd_scene load_steps=6 format=3 uid="uid://xysnoajbdhqy"]
 
 [ext_resource type="Script" path="res://addons/panda_time/resources/window_reminder.gd" id="1_xiyf8"]
 [ext_resource type="Texture2D" uid="uid://dx22g4cm3pl2e" path="res://addons/panda_time/resources/images/logout.png" id="2_iudtu"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h12ek"]
 
 [sub_resource type="Animation" id="Animation_h4dxb"]
 resource_name = "slide_in"
@@ -92,7 +90,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.180392, 0.176471, 0.258824, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
@@ -153,7 +150,6 @@ theme_override_constants/margin_bottom = 10
 
 [node name="ColorRect" type="ColorRect" parent="Control/MarginContainerCollapse"]
 layout_mode = 2
-color = Color(0.294118, 0.25098, 0.337255, 0.45098)
 
 [node name="QuitButton" type="TextureButton" parent="Control/MarginContainerCollapse"]
 custom_minimum_size = Vector2(35, 35)
@@ -168,17 +164,6 @@ ignore_texture_size = true
 stretch_mode = 5
 flip_h = true
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="Control"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -8.0
-offset_bottom = 8.0
-grow_horizontal = 0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_h12ek")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_urum1")
@@ -191,5 +176,3 @@ speed_scale = 2.0
 [connection signal="drag_started" from="Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeHSlider" to="." method="_on_h_slider_drag_started"]
 [connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/SnoozeHSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="Control/MarginContainerCollapse/QuitButton" to="." method="_on_quit_button_pressed"]
-[connection signal="picker_created" from="Control/ColorPickerButton" to="." method="_on_color_picker_button_picker_created"]
-[connection signal="popup_closed" from="Control/ColorPickerButton" to="." method="_on_color_picker_button_popup_closed"]
