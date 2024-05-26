@@ -29,13 +29,13 @@ var is_ready:bool = false
 func _ready() -> void:
 	if is_ready:
 		# Get Audio Refs
-		page_flip_audio = $"../Audio/AudioStreamPlayer_PageFlip"
+		page_flip_audio = $"../Audio/AudioStreamPlayer1"
 		if parent.stats.audio_enabled:
 			page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
 			page_flip_audio.play()
 
-		scribble_audio = $"../Audio/AudioStreamPlayer_Scribble"
-		pencil_tick_audio = $"../Audio/AudioStreamPlayer_PencilTick"
+		scribble_audio = $"../Audio/AudioStreamPlayer2"
+		pencil_tick_audio = $"../Audio/AudioStreamPlayer3"
 
 		parent.pt_free_reminder.connect(_collapse_window)
 		parent.pt_remaining_time.connect(func(remaining_time:String) -> void:
@@ -84,7 +84,7 @@ func _on_dismiss_button_pressed() -> void:
 	_collapse_window()
 
 func _on_snooze_button_pressed() -> void:
-	parent.snoozed = true
+	parent.snooze = true
 	parent.snooze_time = snooze_slider.value
 	_collapse_window()
 

@@ -1,37 +1,32 @@
 @tool
 class_name PandaTimeDock extends Control
 
-#region @onready vars
+# @onready vars
 @onready var timer:Timer = $SessionTimer
 @onready var timer_label:Label = $MarginContainer/VBoxContainer/TimerLabel
 @onready var skip_button:TextureButton = $MarginContainer/VBoxContainer/SkipButton
 @onready var stop_button:TextureButton = $MarginContainer/VBoxContainer/StopButton
 @onready var settings_button:TextureButton = $MarginContainer/VBoxContainer/SettingsButton
-#endregion
 
 # Signals
 signal pt_remaining_time(remaining_time:String)
 signal pt_free_reminder
 
-# Path and Stats
+# Paths and Stats
 const PT_WINDOW_BREAK:Resource = preload("res://addons/panda_time/resources/window_break.tscn")
 const ICON_PATH:String = "res://addons/panda_time/resources/images/icon.ico"
 const ROOT_PATH:String = "user://"
 const FILE_NAME:String = "panda_time.tres"
 var stats:StatsDataPT
 
-# Timer Code
+# Timer, Reminder, Settings, Others
 const TIMER_TEXT:String = "%s:%s:%s"
-
-# Reminder Code
-var snoozed:bool = false
+var snooze:bool = false
 var snooze_time:int = 0
 var dismissed:bool = false
-
-# Settings Code
 var is_settings_window_open:bool = false
-
 var plugin_is_running:bool = false
+
 func _ready() -> void:
 	if plugin_is_running:
 		# Verify previous saved data
@@ -45,9 +40,8 @@ func _ready() -> void:
 		timer.start(1)
 
 		skip_button.pressed.connect(_open_new_session_window)
-		stop_button.toggled.connect(func(toggled:bool) -> void:
-			timer.paused = toggled
-		)
+		stop_button.toggled.connect(func(toggled:bool) -> void: timer.paused = toggled)
+
 		settings_button.pressed.connect(func() -> void:
 			settings_button.set_disabled_custom(true)
 			is_settings_window_open = true
@@ -79,24 +73,21 @@ func _on_break_timer_timeout() -> void:
 	timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
 
 	if stats.session_time_counter == 0:
-		if dismissed:
-			dismissed = false
-			stats.session_time_counter = stats.session_time
-		elif snoozed:
-			snoozed = false
-			stats.session_time_counter = snooze_time
+		if dismissed: _reminder_set_session_time(stats.session_time); dismissed = false
+		elif  snooze: _reminder_set_session_time(snooze_time); snooze = false
 		else: _open_new_session_window()
 	elif stats.session_time_counter == stats.reminder_time:
 		if stats.reminder_window_enabled: _open_new_reminder_window()
 
-	emit_signal("pt_remaining_time",timer_label.text)
+	pt_remaining_time.emit(timer_label.text)
 	stats.session_time_counter -= 1
+
+func _reminder_set_session_time(time:int) -> void: stats.session_time_counter = time
 
 func _open_new_reminder_window() -> void:
 	var window:PTwindowReminder = load("res://addons/panda_time/resources/window_reminder.tscn").instantiate()
 
 	window.is_ready = true
-	window.visible = false
 	window.position.y = DisplayServer.screen_get_usable_rect().size.y - window.size.y - 20
 	DisplayServer.set_native_icon(ICON_PATH)
 
@@ -112,12 +103,11 @@ func _open_new_session_window() -> void:
 	settings_button.set_disabled_custom(true)
 
 	var window:PTwindowBreak = PT_WINDOW_BREAK.instantiate()
+	const BREAK_WINDOW_SIZE:float = 450
 
-	window.is_ready = true
-	match stats.break_window_exclusive:
-		true: window.exclusive = false
-		false: window.exclusive = true
-	window.size = Vector2i.ONE * (450 * (stats.break_window_size * 0.01))
+	window.is_ready  = true
+	window.exclusive = true if not stats.break_window_exclusive else false
+	window.size = Vector2i.ONE * (BREAK_WINDOW_SIZE * (stats.break_window_size * 0.01))
 	window.position = DisplayServer.screen_get_size() / 2 - window.size / 2
 	window.new_session_time = stats.session_time
 	DisplayServer.set_native_icon(ICON_PATH)
@@ -126,7 +116,7 @@ func _open_new_session_window() -> void:
 	window.set_current_screen(DisplayServer.window_get_current_screen())
 
 	window.tree_exiting.connect(func() -> void:
-		snoozed = false
+		snooze = false
 		dismissed = false
 
 		stats.session_time_counter = window.new_session_time

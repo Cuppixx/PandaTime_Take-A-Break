@@ -6,7 +6,7 @@ class_name StatsDataPT extends Resource
 
 # Break Window Settings
 @export var break_window_exclusive:bool = false
-@export var break_window_size:float = 150 # In percentage (100 == minimum / 200 = maximum)
+@export var break_window_size:float = 100 # In percentage (100 == minimum / 200 = maximum)
 @export var break_window_message:bool = true
 
 @export var break_window_timer_countdown:bool = true

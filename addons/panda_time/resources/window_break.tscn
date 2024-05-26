@@ -251,6 +251,5 @@ speed_scale = 3.0
 stream = ExtResource("3_ufyfm")
 volume_db = -5.0
 pitch_scale = 0.88
-bus = &"pTimeAudio"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,19 +1,45 @@
 @tool
 class_name PTwindowBreak extends Window
 
+# Constants
 const IMAGE_ROOT_PATH:String = "res://addons/panda_time/images/"
-const IMAGE_EXTENSION:String = "png"
-
+const IMAGE_EXTENSIONS:Array[String] = ["png","jpg","jpeg","svg"]
+const SEPARATOR:String = "/"
 const ERR:String = "--> PT: An error occurred when trying to access the path!"
-
 const TIMER_TEXT:String = "%s : %s : %s"
 const SESSION_TEXT:String = "%d min"
-const TIMEOUT_TEXT:String = "BREAK IS OVER"
 
-const BASE_DB_PAGE_FLIP:int = 3
-const BASE_DB_SCRIBBLE:int = -10
-const BASE_DB_PENCIL_TICK:int = -18
+const BASE_DB_PAGE_FLIP   :int =   3
+const BASE_DB_SCRIBBLE    :int = -10
+const BASE_DB_PENCIL_TICK :int = -18
 
+#region @onready vars
+@onready var parent := $".."
+
+@onready var bg_color:ColorRect = $Control/ColorRect
+@onready var bg_texture:TextureRect = $Control/TextureRect
+
+@onready var message_container:MarginContainer = $Control/MessageMarginContainer
+@onready var message_bg:ColorRect = $Control/MessageMarginContainer/ColorRect
+@onready var message_label:Label = $Control/MessageMarginContainer/MessageLabel
+
+@onready var timer:Timer = $Timer
+@onready var timer_label:Label = $Control/TimerMarginContainer/TimerLabel
+
+@onready var settings_bg:ColorRect = $Control/SettingsMarginContainer/ColorRect
+@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/NextButton
+@onready var session_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionLabel
+@onready var session_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionHSlider
+
+@onready var anim_player:AnimationPlayer = $AnimationPlayer
+
+@onready var page_flip_audio:AudioStreamPlayer
+@onready var scribble_audio:AudioStreamPlayer
+@onready var pencil_tick_audio:AudioStreamPlayer
+#endregion
+
+# Variables
+var is_ready:bool = false
 var file_array = []
 var is_timer_countdown:bool = false
 var countdown_time:int = 5 * 60 # In seconds
@@ -192,42 +218,19 @@ var timeout_message := {
 	14: "Back at it",
 }
 
-#region @onready vars
-@onready var parent := $".."
 
-@onready var bg_color:ColorRect = $Control/ColorRect
-@onready var bg_texture:TextureRect = $Control/TextureRect
-
-@onready var message_container:MarginContainer = $Control/MessageMarginContainer
-@onready var message_bg:ColorRect = $Control/MessageMarginContainer/ColorRect
-@onready var message_label:Label = $Control/MessageMarginContainer/MessageLabel
-
-@onready var timer:Timer = $Timer
-@onready var timer_label:Label = $Control/TimerMarginContainer/TimerLabel
-
-@onready var settings_bg:ColorRect = $Control/SettingsMarginContainer/ColorRect
-@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/NextButton
-@onready var session_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionLabel
-@onready var session_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionHSlider
-
-@onready var anim_player:AnimationPlayer = $AnimationPlayer
-
-@onready var page_flip_audio:AudioStreamPlayer
-@onready var scribble_audio:AudioStreamPlayer
-@onready var pencil_tick_audio:AudioStreamPlayer
-#endregion
 
 func _notification(what:int) -> void:
 	match what:
 		NOTIFICATION_WM_CLOSE_REQUEST: queue_free()
 		_: pass
 
-var is_ready:bool = false
+
 func _ready() -> void:
 	if is_ready:
-		page_flip_audio = $"../Audio/AudioStreamPlayer_PageFlip"
-		scribble_audio = $"../Audio/AudioStreamPlayer_Scribble"
-		pencil_tick_audio = $"../Audio/AudioStreamPlayer_PencilTick"
+		page_flip_audio = $"../Audio/AudioStreamPlayer1"
+		scribble_audio = $"../Audio/AudioStreamPlayer2"
+		pencil_tick_audio = $"../Audio/AudioStreamPlayer3"
 
 		# Startup
 		if parent.stats.audio_enabled:
@@ -302,11 +305,10 @@ func _get_dir_contents(path):
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir(): _get_dir_contents(path+"/"+file_name)
+			if dir.current_is_dir(): _get_dir_contents(path+SEPARATOR+file_name)
 			else:
-				if file_name.get_extension().to_lower() == IMAGE_EXTENSION:
-					#print("--> KT Found file: " + file_name) # <-- Debug Files Found
-					file_array.append(dir.get_current_dir(true)+"/"+file_name)
+				if file_name.get_extension().to_lower() in IMAGE_EXTENSIONS:
+					file_array.append(dir.get_current_dir(true)+SEPARATOR+file_name)
 			file_name = dir.get_next()
 	else: push_error(ERR)
 

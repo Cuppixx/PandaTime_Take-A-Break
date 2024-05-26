@@ -87,16 +87,16 @@ script = ExtResource("3_shfjm")
 
 [node name="Audio" type="Node" parent="."]
 
-[node name="AudioStreamPlayer_PageFlip" type="AudioStreamPlayer" parent="Audio"]
+[node name="AudioStreamPlayer1" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_7f2xk")
 volume_db = 3.0
 pitch_scale = 1.15
 
-[node name="AudioStreamPlayer_Scribble" type="AudioStreamPlayer" parent="Audio"]
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("3_0sh1u")
 volume_db = -10.0
 
-[node name="AudioStreamPlayer_PencilTick" type="AudioStreamPlayer" parent="Audio"]
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("4_avukd")
 volume_db = -18.0
 pitch_scale = 0.88
