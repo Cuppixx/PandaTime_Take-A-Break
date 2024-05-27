@@ -2,17 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/panda_time/resources/window_break.gd" id="1_gl7d1"]
 [ext_resource type="Texture2D" uid="uid://c77qs7l3wwd0w" path="res://addons/panda_time/images/AI_animals/dog02.png" id="2_ayv2g"]
-[ext_resource type="AudioStream" uid="uid://cs6ue8roqhf2e" path="res://addons/panda_time/sounds/ticking-clock_1-27477.mp3" id="3_ufyfm"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4f0h7"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eyc1i"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6n2rq"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bqgct"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aejk7"]
+[ext_resource type="AudioStream" uid="uid://ddjtnw18cog1l" path="res://addons/panda_time/sounds/wall_clock.mp3" id="2_mjeuv"]
 
 [sub_resource type="Animation" id="Animation_2dm14"]
 resource_name = "fade_in"
@@ -76,6 +66,16 @@ _data = {
 "fade_out": SubResource("Animation_uto0w")
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4f0h7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eyc1i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6n2rq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bqgct"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aejk7"]
+
 [node name="Window" type="Window"]
 title = "Take A Break"
 position = Vector2i(1055, 495)
@@ -87,6 +87,17 @@ borderless = true
 transparent = true
 script = ExtResource("1_gl7d1")
 
+[node name="Timer" type="Timer" parent="."]
+
+[node name="TimeoutAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_mjeuv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_735bd")
+}
+speed_scale = 3.0
+
 [node name="Control" type="Control" parent="."]
 modulate = Color(0.137255, 0.137255, 0.137255, 0.552941)
 layout_mode = 3
@@ -96,7 +107,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="BgColorRect" type="ColorRect" parent="Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -105,7 +116,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0.403922, 0.388235, 1)
 
-[node name="TextureRect" type="TextureRect" parent="Control"]
+[node name="BgTextureRect" type="TextureRect" parent="Control"]
 self_modulate = Color(1, 1, 1, 0.882353)
 layout_mode = 1
 anchors_preset = 15
@@ -117,7 +128,7 @@ texture = ExtResource("2_ayv2g")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MessageMarginContainer" type="MarginContainer" parent="Control"]
+[node name="MsgMarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -128,11 +139,11 @@ grow_horizontal = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 5
 
-[node name="ColorRect" type="ColorRect" parent="Control/MessageMarginContainer"]
+[node name="MsgColorRect" type="ColorRect" parent="Control/MsgMarginContainer"]
 layout_mode = 2
 color = Color(0, 0, 0.254902, 0.411765)
 
-[node name="MessageLabel" type="Label" parent="Control/MessageMarginContainer"]
+[node name="MsgLabel" type="Label" parent="Control/MsgMarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 0.823529)
@@ -167,8 +178,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 0.933333)
 theme_override_colors/font_shadow_color = Color(0.141176, 0.141176, 0.141176, 0.909804)
+theme_override_colors/font_outline_color = Color(0.0885599, 0.0885599, 0.0885599, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 0
 theme_override_font_sizes/font_size = 58
 text = "00 : 39 : 34"
 
@@ -186,22 +199,22 @@ theme_override_constants/margin_top = 7
 theme_override_constants/margin_right = 7
 theme_override_constants/margin_bottom = 7
 
-[node name="ColorRect" type="ColorRect" parent="Control/SettingsMarginContainer"]
+[node name="SettingsColorRect" type="ColorRect" parent="Control/SettingsMarginContainer"]
 layout_mode = 2
 color = Color(0, 0, 0.254902, 0.313726)
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/SettingsMarginContainer"]
+[node name="Margin" type="MarginContainer" parent="Control/SettingsMarginContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 13
 theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/SettingsMarginContainer/MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="Control/SettingsMarginContainer/Margin"]
 layout_mode = 2
 theme_override_constants/separation = -15
 
-[node name="NextButton" type="Button" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer"]
+[node name="NextButton" type="Button" parent="Control/SettingsMarginContainer/Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -220,11 +233,11 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_bqgct")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_aejk7")
 text = "<<<  Next Session  >>>"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer"]
+[node name="HBox" type="HBoxContainer" parent="Control/SettingsMarginContainer/Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SessionHSlider" type="HSlider" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SessionHSlider" type="HSlider" parent="Control/SettingsMarginContainer/Margin/VBox/HBox"]
 self_modulate = Color(1, 1, 0.878431, 1)
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -235,21 +248,8 @@ max_value = 300.0
 step = 5.0
 value = 5.0
 
-[node name="SessionLabel" type="Label" parent="Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SessionLabel" type="Label" parent="Control/SettingsMarginContainer/Margin/VBox/HBox"]
 layout_mode = 2
 text = "000 min"
-
-[node name="Timer" type="Timer" parent="."]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_735bd")
-}
-speed_scale = 3.0
-
-[node name="AudioPlayer1" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_ufyfm")
-volume_db = -5.0
-pitch_scale = 0.88
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

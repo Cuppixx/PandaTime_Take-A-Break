@@ -55,6 +55,7 @@ func _ready() -> void:
 		$Control/MarginContainerCollapse/ColorRect.color = interface_base_color
 
 		var interface_accent_color:Color = editor_settings.get_setting("interface/theme/accent_color")
+		$Control/MarginContainerCollapse/QuitButton.self_modulate = interface_accent_color.darkened(0.25)
 		interface_accent_color.a = 0.05
 		#print(interface_accent_color)
 		bg_color_rect.color = interface_base_color.blend(interface_accent_color)

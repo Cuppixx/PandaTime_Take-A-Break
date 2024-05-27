@@ -9,30 +9,29 @@ const ERR:String = "--> PT: An error occurred when trying to access the path!"
 const TIMER_TEXT:String = "%s : %s : %s"
 const SESSION_TEXT:String = "%d min"
 
-const BASE_DB_PAGE_FLIP   :int =   3
-const BASE_DB_SCRIBBLE    :int = -10
-const BASE_DB_PENCIL_TICK :int = -18
+const BASE_DB_PAGE_FLIP  :int =   3
+const BASE_DB_SCRIBBLE   :int = -10
+const BASE_DB_PENCIL_TICK:int = -18
+
+const FADE_SPEED_IN :int =  3
+const FADE_SPEED_OUT:int = 11
 
 #region @onready vars
 @onready var parent := $".."
-
-@onready var bg_color:ColorRect = $Control/ColorRect
-@onready var bg_texture:TextureRect = $Control/TextureRect
-
-@onready var message_container:MarginContainer = $Control/MessageMarginContainer
-@onready var message_bg:ColorRect = $Control/MessageMarginContainer/ColorRect
-@onready var message_label:Label = $Control/MessageMarginContainer/MessageLabel
-
+@onready var bg_color_rect:ColorRect = $Control/BgColorRect
+@onready var bg_texture_rect:TextureRect = $Control/BgTextureRect
+@onready var message_container:MarginContainer = $Control/MsgMarginContainer
+@onready var message_bg_rect:ColorRect = $Control/MsgMarginContainer/MsgColorRect
+@onready var message_label:Label = $Control/MsgMarginContainer/MsgLabel
 @onready var timer:Timer = $Timer
 @onready var timer_label:Label = $Control/TimerMarginContainer/TimerLabel
-
-@onready var settings_bg:ColorRect = $Control/SettingsMarginContainer/ColorRect
-@onready var next_button:Button = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/NextButton
-@onready var session_label:Label = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionLabel
-@onready var session_slider:HSlider = $Control/SettingsMarginContainer/MarginContainer/VBoxContainer/HBoxContainer/SessionHSlider
-
+@onready var settings_bg_rect:ColorRect = $Control/SettingsMarginContainer/SettingsColorRect
+@onready var next_button:Button  = $Control/SettingsMarginContainer/Margin/VBox/NextButton
+@onready var session_label:Label = $Control/SettingsMarginContainer/Margin/VBox/HBox/SessionLabel
+@onready var session_slider:HSlider = $Control/SettingsMarginContainer/Margin/VBox/HBox/SessionHSlider
 @onready var anim_player:AnimationPlayer = $AnimationPlayer
 
+@onready var timeout_audio:AudioStreamPlayer = $TimeoutAudioPlayer
 @onready var page_flip_audio:AudioStreamPlayer
 @onready var scribble_audio:AudioStreamPlayer
 @onready var pencil_tick_audio:AudioStreamPlayer
@@ -218,45 +217,50 @@ var timeout_message := {
 	14: "Back at it",
 }
 
-
+var hours  :String = "0"
+var minutes:String = "0"
+var seconds:String = "0"
 
 func _notification(what:int) -> void:
 	match what:
 		NOTIFICATION_WM_CLOSE_REQUEST: queue_free()
 		_: pass
 
-
 func _ready() -> void:
 	if is_ready:
-		page_flip_audio = $"../Audio/AudioStreamPlayer1"
-		scribble_audio = $"../Audio/AudioStreamPlayer2"
+		# Get AudioPlayer references
+		page_flip_audio   = $"../Audio/AudioStreamPlayer1"
+		scribble_audio    = $"../Audio/AudioStreamPlayer2"
 		pencil_tick_audio = $"../Audio/AudioStreamPlayer3"
 
 		# Startup
 		if parent.stats.audio_enabled:
 			page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
 			page_flip_audio.play()
-		anim_player.speed_scale = 3
+		anim_player.speed_scale = FADE_SPEED_IN
 		anim_player.play("fade_in")
 
 		# Set random Background and Text
 		_get_dir_contents(IMAGE_ROOT_PATH)
-		if file_array.size() > 0: bg_texture.texture = load(file_array[randi_range(0,file_array.size()-1)])
+		if file_array.size() > 0:
+			bg_texture_rect.texture = load(file_array[randi_range(0,file_array.size()-1)])
 		if parent.stats.break_window_message == true:
-			message_bg.color = parent.stats.break_window_ui_bg_color
+			message_bg_rect.color = parent.stats.break_window_ui_bg_color
 			message_label.text = message[randi_range(1,message.size())]
-		else:
-			message_label.text = ""
-			message_container.visible = false
+		else: message_container.visible = false
 
 		# Load Settings and Data
-		bg_color.color = parent.stats.break_window_image_filter_color
-		settings_bg.color = parent.stats.break_window_ui_bg_color
-
+		bg_color_rect.color = parent.stats.break_window_image_filter_color
+		settings_bg_rect.color = parent.stats.break_window_ui_bg_color
 		is_timer_countdown = parent.stats.break_window_timer_countdown
 		countdown_time = parent.stats.break_window_time
+
+		# Set Timer Label
+		timer_label.add_theme_color_override("font_shadow_color", Color(0.14,0.14,0.14,0.9))
+		timer_label.add_theme_constant_override("outline_size", 0)
 		timer_label.text = TIMER_TEXT % ["00","00","00"]
 
+		# Session
 		_set_session_time_label()
 		session_slider.value = new_session_time / 60
 
@@ -278,26 +282,8 @@ func _ready() -> void:
 			_set_session_time_label()
 		)
 
-		# Start the break time
+		# End of '_ready()'. Start the break time
 		timer.start(1)
-
-func _close_window() -> void:
-	if parent.stats.audio_enabled:
-		page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
-		page_flip_audio.play()
-
-	anim_player.speed_scale = 11
-	anim_player.play("fade_out")
-
-	if parent.stats.audio_enabled: await page_flip_audio.finished
-	else: await anim_player.animation_finished
-	queue_free()
-
-func _set_session_time_label() -> void:
-	session_label.text = SESSION_TEXT % [new_session_time / 60]
-	if (new_session_time / 60) < 10: session_label.text = str(0)+str(0)+session_label.text
-	elif (new_session_time / 60) >= 10 and (new_session_time / 60) < 100:
-		session_label.text = str(0)+session_label.text
 
 func _get_dir_contents(path):
 	var dir = DirAccess.open(path)
@@ -305,48 +291,73 @@ func _get_dir_contents(path):
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir(): _get_dir_contents(path+SEPARATOR+file_name)
+			if dir.current_is_dir():
+				_get_dir_contents(path+SEPARATOR+file_name)
 			else:
 				if file_name.get_extension().to_lower() in IMAGE_EXTENSIONS:
 					file_array.append(dir.get_current_dir(true)+SEPARATOR+file_name)
 			file_name = dir.get_next()
 	else: push_error(ERR)
 
-var hours:String = str(0)
-var minutes:String = str(0)
-var seconds:String = str(0)
+func _set_session_time_label() -> void:
+	session_label.text = SESSION_TEXT % [new_session_time / 60]
+	if new_session_time / 60 < 10: session_label.text = "0" + "0" + session_label.text
+	elif new_session_time / 60 < 100: session_label.text = "0" +session_label.text
+	else: pass
+
+func _close_window() -> void:
+	timeout_audio.stop()
+	if parent.stats.audio_enabled:
+		page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
+		page_flip_audio.play()
+
+	anim_player.speed_scale = FADE_SPEED_OUT
+	anim_player.play("fade_out")
+
+	if parent.stats.audio_enabled: await page_flip_audio.finished
+	else: await anim_player.animation_finished
+	queue_free()
+
 func _on_timer_timeout() -> void:
 	# Counting the timer down
 	if is_timer_countdown:
 		hours = str(countdown_time / 3600)
 		minutes = str(countdown_time % 3600 / 60)
 		seconds = str(countdown_time % 3600 % 60)
-		if int(hours) < 10: hours = str(0)+hours
-		if int(minutes) < 10: minutes = str(0)+minutes
-		if int(seconds) < 10: seconds = str(0)+seconds
-		if countdown_time > 0: timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
-		if countdown_time == 0:
-			$AudioPlayer1.play()
-			timer_label.self_modulate = Color(1,0,0,9.5)
-			timer_label.text = (timeout_message[randi_range(1,timeout_message.size())]).to_upper()
-		elif countdown_time == -(parent.stats.break_window_timeout_time):
+		if int(hours) < 10: hours = "0" + hours
+		if int(minutes) < 10: minutes = "0" +minutes
+		if int(seconds) < 10: seconds = "0" +seconds
+
+		if countdown_time > 0:
+			timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
+		elif countdown_time == 0 and not parent.stats.break_window_timeout_time == 0:
+			#message_container.visible = false
+			timer_label.remove_theme_color_override("font_shadow_color")
+			timer_label.add_theme_constant_override("outline_size", 9)
+			timer_label.self_modulate = Color.CRIMSON
+			timer_label.text = timeout_message[randi_range(1,timeout_message.size())]
+		elif countdown_time == -(parent.stats.break_window_timeout_time) and parent.stats.break_window_close_on_timeout:
 			timer.stop()
-			if parent.stats.break_window_close_on_timeout == true: _close_window()
-			else: timer_label.visible = true
-		elif countdown_time >= -(parent.stats.break_window_timeout_time) and countdown_time < 0:
+			timer_label.visible = false
+			_close_window()
+		elif countdown_time >= -(parent.stats.break_window_timeout_time) or countdown_time < 0:
 			match timer_label.visible:
-				true: timer_label.visible = false
-				false: timer_label.visible = true
+				true:
+					timer_label.visible = false
+				false:
+					timeout_audio.play()
+					timer_label.visible = true
 		countdown_time -= 1
+
 	# Counting the timer up
 	else:
 		seconds = str(int(seconds) + 1)
-		if int(seconds) >= 60: seconds = str(0); minutes = str(int(minutes) + 1)
-		if int(minutes) >= 60: minutes = str(0); hours = str(int(hours) + 1)
+		if int(seconds) >= 60: seconds = "0"; minutes = str(int(minutes) + 1)
+		if int(minutes) >= 60: minutes = "0"; hours = str(int(hours) + 1)
 		var final_hours:String = hours
 		var final_minutes:String = minutes
 		var final_seconds:String = seconds
-		if int(final_hours) < 10: final_hours = str(0)+hours
-		if int(final_minutes) < 10: final_minutes = str(0)+minutes
-		if int(final_seconds) < 10: final_seconds = str(0)+seconds
+		if int(final_hours) < 10: final_hours = "0" + hours
+		if int(final_minutes) < 10: final_minutes = "0" + minutes
+		if int(final_seconds) < 10: final_seconds = "0" + seconds
 		timer_label.text = TIMER_TEXT % [final_hours,final_minutes,final_seconds]

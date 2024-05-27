@@ -83,7 +83,7 @@ value = 45.0
 
 [node name="SizeLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
-text = "Break Window Size 150 percent"
+text = "Break Window Size 100 percent"
 
 [node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -91,7 +91,7 @@ size_flags_vertical = 4
 min_value = 100.0
 max_value = 200.0
 step = 5.0
-value = 150.0
+value = 100.0
 
 [node name="ExclusiveButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
@@ -138,7 +138,6 @@ text = " Countdown Time: 8 min"
 [node name="CountdownTimeoutHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
 layout_mode = 2
 size_flags_vertical = 4
-min_value = 1.0
 max_value = 180.0
 value = 15.0
 
