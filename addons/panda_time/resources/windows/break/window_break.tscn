@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://b7bhfpfiurkcb"]
 
-[ext_resource type="Script" path="res://addons/panda_time/resources/window_break.gd" id="1_gl7d1"]
-[ext_resource type="Texture2D" uid="uid://c77qs7l3wwd0w" path="res://addons/panda_time/images/AI_animals/dog02.png" id="2_ayv2g"]
-[ext_resource type="AudioStream" uid="uid://ddjtnw18cog1l" path="res://addons/panda_time/sounds/wall_clock.mp3" id="2_mjeuv"]
+[ext_resource type="Script" path="res://addons/panda_time/resources/windows/break/window_break.gd" id="1_w1e1k"]
+[ext_resource type="AudioStream" uid="uid://ddjtnw18cog1l" path="res://addons/panda_time/sounds/wall_clock.mp3" id="2_tmr4n"]
+[ext_resource type="Texture2D" uid="uid://c77qs7l3wwd0w" path="res://addons/panda_time/images/AI_animals/dog02.png" id="3_mjgn5"]
 
 [sub_resource type="Animation" id="Animation_2dm14"]
 resource_name = "fade_in"
@@ -85,12 +85,12 @@ exclusive = true
 unresizable = true
 borderless = true
 transparent = true
-script = ExtResource("1_gl7d1")
+script = ExtResource("1_w1e1k")
 
 [node name="Timer" type="Timer" parent="."]
 
 [node name="TimeoutAudioPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_mjeuv")
+stream = ExtResource("2_tmr4n")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -124,7 +124,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_ayv2g")
+texture = ExtResource("3_mjgn5")
 expand_mode = 1
 stretch_mode = 6
 

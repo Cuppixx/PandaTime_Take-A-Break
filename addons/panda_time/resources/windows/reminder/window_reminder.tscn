@@ -1,79 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://xysnoajbdhqy"]
+[gd_scene load_steps=3 format=3 uid="uid://xysnoajbdhqy"]
 
-[ext_resource type="Script" path="res://addons/panda_time/resources/window_reminder.gd" id="1_xiyf8"]
-[ext_resource type="Texture2D" uid="uid://dx22g4cm3pl2e" path="res://addons/panda_time/resources/images/logout.png" id="2_iudtu"]
-
-[sub_resource type="Animation" id="Animation_h4dxb"]
-resource_name = "slide_in"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.025, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 2,
-"values": [-410, 20]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-
-[sub_resource type="Animation" id="Animation_384t0"]
-resource_name = "slide_out"
-length = 1.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 2,
-"values": [20, -410]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_urum1"]
-_data = {
-"slide_in": SubResource("Animation_h4dxb"),
-"slide_out": SubResource("Animation_384t0")
-}
+[ext_resource type="Script" path="res://addons/panda_time/resources/windows/reminder/window_reminder.gd" id="1_jnou7"]
+[ext_resource type="Texture2D" uid="uid://dx22g4cm3pl2e" path="res://addons/panda_time/resources/images/logout.png" id="2_c0aai"]
 
 [node name="WindowReminder" type="Window"]
 title = "PandaTimeReminder"
-position = Vector2i(-410, 36)
+position = Vector2i(20, 36)
 size = Vector2i(350, 150)
-visible = false
 unresizable = true
 borderless = true
 always_on_top = true
 transparent = true
-script = ExtResource("1_xiyf8")
+script = ExtResource("1_jnou7")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -155,20 +93,14 @@ layout_mode = 2
 custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
 size_flags_horizontal = 4
-texture_normal = ExtResource("2_iudtu")
-texture_pressed = ExtResource("2_iudtu")
-texture_hover = ExtResource("2_iudtu")
-texture_disabled = ExtResource("2_iudtu")
-texture_focused = ExtResource("2_iudtu")
+texture_normal = ExtResource("2_c0aai")
+texture_pressed = ExtResource("2_c0aai")
+texture_hover = ExtResource("2_c0aai")
+texture_disabled = ExtResource("2_c0aai")
+texture_focused = ExtResource("2_c0aai")
 ignore_texture_size = true
 stretch_mode = 5
 flip_h = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_urum1")
-}
-speed_scale = 2.0
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/DismissButton" to="." method="_on_dismiss_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/SnoozeButton" to="." method="_on_snooze_button_pressed"]

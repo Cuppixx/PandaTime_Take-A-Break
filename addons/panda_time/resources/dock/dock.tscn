@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://d2xno6jyg2rpn"]
 
-[ext_resource type="Script" path="res://addons/panda_time/resources/dock.gd" id="1_c7ldf"]
+[ext_resource type="Script" path="res://addons/panda_time/resources/dock/dock.gd" id="1_c7ldf"]
 [ext_resource type="AudioStream" uid="uid://dgwgj5ew4swue" path="res://addons/panda_time/sounds/pageflip.mp3" id="2_7f2xk"]
 [ext_resource type="Texture2D" uid="uid://dqj8pfboaowwf" path="res://addons/panda_time/resources/images/pause.png" id="2_inqla"]
 [ext_resource type="Texture2D" uid="uid://d0g747ffr5rey" path="res://addons/panda_time/resources/images/skip.png" id="2_vib33"]
 [ext_resource type="AudioStream" uid="uid://gymxg0u7pfwr" path="res://addons/panda_time/sounds/scribble_long_strokes.mp3" id="3_0sh1u"]
-[ext_resource type="Script" path="res://addons/panda_time/resources/dock_item.gd" id="3_shfjm"]
+[ext_resource type="Script" path="res://addons/panda_time/resources/dock/dock_btn_colorconfig.gd" id="3_2ldr0"]
 [ext_resource type="AudioStream" uid="uid://b1iivgtmgqk4l" path="res://addons/panda_time/sounds/pencil_check_mark.mp3" id="4_avukd"]
 [ext_resource type="Texture2D" uid="uid://cmseiore71f7p" path="res://addons/panda_time/resources/images/settings.png" id="5_gs5nu"]
 
@@ -46,7 +46,7 @@ texture_disabled = ExtResource("2_vib33")
 texture_focused = ExtResource("2_vib33")
 ignore_texture_size = true
 stretch_mode = 0
-script = ExtResource("3_shfjm")
+script = ExtResource("3_2ldr0")
 
 [node name="TimerLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -67,7 +67,7 @@ texture_disabled = ExtResource("2_inqla")
 texture_focused = ExtResource("2_inqla")
 ignore_texture_size = true
 stretch_mode = 0
-script = ExtResource("3_shfjm")
+script = ExtResource("3_2ldr0")
 
 [node name="SettingsButton" type="TextureButton" parent="MarginContainer/VBoxContainer"]
 self_modulate = Color(0.337255, 0.619608, 1, 1)
@@ -83,7 +83,7 @@ texture_disabled = ExtResource("5_gs5nu")
 texture_focused = ExtResource("5_gs5nu")
 ignore_texture_size = true
 stretch_mode = 0
-script = ExtResource("3_shfjm")
+script = ExtResource("3_2ldr0")
 
 [node name="Audio" type="Node" parent="."]
 

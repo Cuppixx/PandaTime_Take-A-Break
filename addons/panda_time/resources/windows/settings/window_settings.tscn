@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://c3xdt0tv6t0q7"]
 
-[ext_resource type="Script" path="res://addons/panda_time/resources/window_settings.gd" id="1_4uy82"]
+[ext_resource type="Script" path="res://addons/panda_time/resources/windows/settings/window_settings.gd" id="1_4uy82"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wdlsn"]
 
@@ -35,7 +35,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Control" type="Control" parent="ScrollContainer"]
-custom_minimum_size = Vector2(500, 850)
+custom_minimum_size = Vector2(500, 780)
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/Control"]
@@ -61,18 +61,13 @@ size_flags_vertical = 0
 theme_override_font_sizes/font_size = 20
 text = "--- PandaTime Settings ---"
 
-[node name="GridContainer" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
+[node name="GeneralGrid" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="SessionLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Session Time: 45 min"
-
-[node name="SessionHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
+[node name="SessionHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GeneralGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -81,11 +76,12 @@ max_value = 300.0
 step = 5.0
 value = 45.0
 
-[node name="SizeLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
+[node name="SessionLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GeneralGrid"]
 layout_mode = 2
-text = "Break Window Size 100 percent"
+size_flags_horizontal = 3
+text = " Session Time: 45 min"
 
-[node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
+[node name="SizeHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GeneralGrid"]
 layout_mode = 2
 size_flags_vertical = 4
 min_value = 100.0
@@ -93,55 +89,60 @@ max_value = 200.0
 step = 5.0
 value = 100.0
 
-[node name="ExclusiveButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
+[node name="SizeLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GeneralGrid"]
+layout_mode = 2
+text = " Break Window Size: 100 percent"
+
+[node name="ExclusiveButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GeneralGrid"]
 layout_mode = 2
 button_pressed = true
 text = "Break Window Exclusive"
 
-[node name="MessageButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer"]
+[node name="MessageButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GeneralGrid"]
 layout_mode = 2
 text = "Hide Break Quotes"
 
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
+[node name="HSeparator1" type="HSeparator" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 self_modulate = Color(0.372549, 0.454902, 0.839216, 1)
 layout_mode = 2
 
-[node name="GridContainer2" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
+[node name="TimerGrid" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="CountdownButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
+[node name="CountdownButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/TimerGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "Toggle Break Countdown"
 
-[node name="CountdownTimeoutButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
+[node name="CountdownTimeoutButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/TimerGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
-text = "Autoclose on Timeout "
+text = "Autoclose after Timeout "
 
-[node name="CountdownHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
+[node name="CountdownHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/TimerGrid"]
 layout_mode = 2
 size_flags_vertical = 4
 min_value = 1.0
 max_value = 45.0
-value = 8.0
+value = 10.0
 
-[node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
+[node name="CountdownLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/TimerGrid"]
 layout_mode = 2
-text = " Countdown Time: 8 min"
+text = " Countdown Time: 10 min"
 
-[node name="CountdownTimeoutHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
+[node name="CountdownTimeoutHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/TimerGrid"]
 layout_mode = 2
 size_flags_vertical = 4
 max_value = 180.0
+step = 5.0
 value = 15.0
 
-[node name="CountdownTimeoutLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer2"]
+[node name="CountdownTimeoutLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/TimerGrid"]
 layout_mode = 2
 text = " Autoclose '15' sec after Timeout"
 
@@ -149,48 +150,48 @@ text = " Autoclose '15' sec after Timeout"
 self_modulate = Color(0.372549, 0.454902, 0.839216, 1)
 layout_mode = 2
 
-[node name="GridContainer3" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
+[node name="ImageGrid" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="ImageLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer3"]
+[node name="ImageLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ImageGrid"]
 layout_mode = 2
 text = " Image Filter Color"
 
-[node name="ImageColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer3"]
+[node name="ImageColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ImageGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "IMAGE FILTER"
-color = Color(0, 0.403922, 0.388235, 1)
+color = Color(0.176471, 0.0823529, 0.219608, 1)
 
-[node name="UiLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer3"]
+[node name="UiLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ImageGrid"]
 layout_mode = 2
 text = " UI Background Color"
 
-[node name="UiColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer3"]
+[node name="UiColorPickerButton" type="ColorPickerButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ImageGrid"]
 layout_mode = 2
 text = "UI FILTER"
-color = Color(0, 0, 0.254902, 0.411765)
+color = Color(0.270588, 0.054902, 0.156863, 0.411765)
 
 [node name="HSeparator3" type="HSeparator" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 self_modulate = Color(0.372549, 0.454902, 0.839216, 1)
 layout_mode = 2
 
-[node name="GridContainer4" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
+[node name="ReminderGrid" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="ReminderButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4"]
+[node name="ReminderButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ReminderGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "Toggle Reminder"
 
-[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4"]
+[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ReminderGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_wdlsn")
@@ -200,38 +201,38 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
 disabled = true
 
-[node name="ReminderHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4"]
+[node name="ReminderHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ReminderGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 min_value = 5.0
-max_value = 298.0
+max_value = 180.0
 step = 5.0
 value = 30.0
 
-[node name="ReminderLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer4"]
+[node name="ReminderLabel" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/ReminderGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Reminder at '30' sec left"
+text = " Reminder at '30' sec left"
 
 [node name="HSeparator4" type="HSeparator" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 self_modulate = Color(0.372549, 0.454902, 0.839216, 1)
 layout_mode = 2
 
-[node name="GridContainer5" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
+[node name="AudioGrid" type="GridContainer" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="AudioButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5"]
+[node name="AudioButton" type="CheckButton" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/AudioGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 button_pressed = true
 text = "Toggle Audio"
 
-[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5"]
+[node name="EmptyButton" type="Button" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/AudioGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_wdlsn")
@@ -241,7 +242,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_rmw74")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_agdh5")
 disabled = true
 
-[node name="AudioHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5"]
+[node name="AudioHSlider" type="HSlider" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/AudioGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -249,9 +250,9 @@ min_value = -30.0
 max_value = 30.0
 step = 5.0
 
-[node name="Label" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/GridContainer5"]
+[node name="Label" type="Label" parent="ScrollContainer/Control/MarginContainer/VBoxContainer/AudioGrid"]
 layout_mode = 2
-text = "Audio Addend: 0"
+text = " Audio Addend: 0 db"
 
 [node name="ResetButton" type="Button" parent="ScrollContainer/Control/MarginContainer/VBoxContainer"]
 layout_mode = 2

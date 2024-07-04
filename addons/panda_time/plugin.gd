@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const DOCK:Resource = preload("res://addons/panda_time/resources/dock.tscn")
+const DOCK:Resource = preload("res://addons/panda_time/resources/dock/dock.tscn")
 var dock:PandaTimeDock
 
 func _enter_tree() -> void:

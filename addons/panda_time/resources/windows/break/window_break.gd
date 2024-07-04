@@ -7,7 +7,11 @@ const IMAGE_EXTENSIONS:Array[String] = ["png","jpg","jpeg","svg"]
 const SEPARATOR:String = "/"
 const ERR:String = "--> PT: An error occurred when trying to access the path!"
 const TIMER_TEXT:String = "%s : %s : %s"
-const SESSION_TEXT:String = "%d min"
+const SESSION_TEXT:String = "%s min"
+
+const DB_TIMEOUT_DEFAULT_STEP:int = 3
+const MAX_DB_TIMEOUT:int =   8 # Must be positive
+const MIN_DB_TIMEOUT:int = -30 # Must be negative
 
 const BASE_DB_PAGE_FLIP  :int =   3
 const BASE_DB_SCRIBBLE   :int = -10
@@ -15,6 +19,10 @@ const BASE_DB_PENCIL_TICK:int = -18
 
 const FADE_SPEED_IN :int =  3
 const FADE_SPEED_OUT:int = 11
+
+const THEME_OUTLINE_SIZE:int = 9
+const THEME_SHADOW_COLOR:Color = Color(0.14,0.14,0.14,0.9)
+const SELF_MODULATE:Color = Color.CRIMSON
 
 #region @onready vars
 @onready var parent := $".."
@@ -44,7 +52,7 @@ var is_timer_countdown:bool = false
 var countdown_time:int = 5 * 60 # In seconds
 var new_session_time:int
 
-var message := {
+var message:Dictionary = {
 	1:   "Stretch those legs!",
 	2:   "Eyes need rest too.",
 	3:   "Time for a breather!",
@@ -198,7 +206,7 @@ var message := {
 
 	150: "Time to RTFMM.",
 }
-var timeout_message := {
+var timeout_message:Dictionary = {
 	1:  "Break is done",
 	2:  "Break is over",
 	3:  "Break is up",
@@ -221,10 +229,14 @@ var hours  :String = "0"
 var minutes:String = "0"
 var seconds:String = "0"
 
+var stats:StatsDataPT = StatsDataPT.new()
+
+
 func _notification(what:int) -> void:
 	match what:
 		NOTIFICATION_WM_CLOSE_REQUEST: queue_free()
 		_: pass
+
 
 func _ready() -> void:
 	if is_ready:
@@ -234,31 +246,31 @@ func _ready() -> void:
 		pencil_tick_audio = $"../Audio/AudioStreamPlayer3"
 
 		# Startup
-		if parent.stats.audio_enabled:
-			page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
+		if stats.audio_enabled:
+			page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + stats.audio_addend
 			page_flip_audio.play()
 		anim_player.speed_scale = FADE_SPEED_IN
 		anim_player.play("fade_in")
 
-		# Set random Background and Text
+		# Set random background and text
 		_get_dir_contents(IMAGE_ROOT_PATH)
-		if file_array.size() > 0:
-			bg_texture_rect.texture = load(file_array[randi_range(0,file_array.size()-1)])
-		if parent.stats.break_window_message == true:
-			message_bg_rect.color = parent.stats.break_window_ui_bg_color
+		if file_array.size() > 0: bg_texture_rect.texture = load(file_array[randi_range(0,file_array.size()-1)])
+		if stats.break_window_message == true:
+			message_bg_rect.color = stats.break_window_ui_bg_color
 			message_label.text = message[randi_range(1,message.size())]
-		else: message_container.visible = false
+		else:
+			message_container.visible = false
 
-		# Load Settings and Data
-		bg_color_rect.color = parent.stats.break_window_image_filter_color
-		settings_bg_rect.color = parent.stats.break_window_ui_bg_color
-		is_timer_countdown = parent.stats.break_window_timer_countdown
-		countdown_time = parent.stats.break_window_time
+		# Load settings and data
+		bg_color_rect.color = stats.break_window_image_filter_color
+		settings_bg_rect.color = stats.break_window_ui_bg_color
+		is_timer_countdown = stats.break_window_timer_countdown
+		countdown_time = stats.break_window_time
 
-		# Set Timer Label
-		timer_label.add_theme_color_override("font_shadow_color", Color(0.14,0.14,0.14,0.9))
-		timer_label.add_theme_constant_override("outline_size", 0)
+		# Set timer label
 		timer_label.text = TIMER_TEXT % ["00","00","00"]
+		timer_label.add_theme_constant_override("outline_size", 0)
+		timer_label.add_theme_color_override("font_shadow_color", THEME_SHADOW_COLOR)
 
 		# Session
 		_set_session_time_label()
@@ -267,14 +279,14 @@ func _ready() -> void:
 		# Connect Signals
 		next_button.pressed.connect(_close_window)
 		session_slider.drag_started.connect(func() -> void:
-			if parent.stats.audio_enabled:
-				scribble_audio.volume_db = BASE_DB_SCRIBBLE + parent.stats.audio_addend
+			if stats.audio_enabled:
+				scribble_audio.volume_db = BASE_DB_SCRIBBLE + stats.audio_addend
 				scribble_audio.play()
 		)
 		session_slider.drag_ended.connect(func(_bool:bool) -> void:
 			scribble_audio.stop()
-			if parent.stats.audio_enabled:
-				pencil_tick_audio.volume_db = BASE_DB_PENCIL_TICK + parent.stats.audio_addend
+			if stats.audio_enabled:
+				pencil_tick_audio.volume_db = BASE_DB_PENCIL_TICK + stats.audio_addend
 				pencil_tick_audio.play()
 		)
 		session_slider.value_changed.connect(func(value:float) -> void:
@@ -282,82 +294,103 @@ func _ready() -> void:
 			_set_session_time_label()
 		)
 
-		# End of '_ready()'. Start the break time
+		# Start the break time
 		timer.start(1)
+		if stats.audio_enabled:
+			timeout_audio.volume_db = MIN_DB_TIMEOUT + stats.audio_addend
 
-func _get_dir_contents(path):
-	var dir = DirAccess.open(path)
-	if dir:
+
+func _get_dir_contents(path:String):
+	var dir := DirAccess.open(path)
+	if not dir: push_error(ERR)
+	else:
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name := dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir():
-				_get_dir_contents(path+SEPARATOR+file_name)
-			else:
-				if file_name.get_extension().to_lower() in IMAGE_EXTENSIONS:
-					file_array.append(dir.get_current_dir(true)+SEPARATOR+file_name)
+			if dir.current_is_dir(): _get_dir_contents(path+SEPARATOR+file_name)
+			elif file_name.get_extension().to_lower() in IMAGE_EXTENSIONS:
+				file_array.append(dir.get_current_dir(true)+SEPARATOR+file_name)
 			file_name = dir.get_next()
-	else: push_error(ERR)
+
 
 func _set_session_time_label() -> void:
-	session_label.text = SESSION_TEXT % [new_session_time / 60]
-	if new_session_time / 60 < 10: session_label.text = "0" + "0" + session_label.text
-	elif new_session_time / 60 < 100: session_label.text = "0" +session_label.text
-	else: pass
+	var formatted_minutes:String = str(new_session_time / 60)
+	match formatted_minutes.length():
+		1: formatted_minutes = "00" + formatted_minutes
+		2: formatted_minutes = "0"  + formatted_minutes
+		_: pass
+	session_label.text = SESSION_TEXT % formatted_minutes
+
 
 func _close_window() -> void:
 	timeout_audio.stop()
-	if parent.stats.audio_enabled:
-		page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + parent.stats.audio_addend
+	if stats.audio_enabled:
+		page_flip_audio.volume_db = BASE_DB_PAGE_FLIP + stats.audio_addend
 		page_flip_audio.play()
 
 	anim_player.speed_scale = FADE_SPEED_OUT
 	anim_player.play("fade_out")
 
-	if parent.stats.audio_enabled: await page_flip_audio.finished
+	if stats.audio_enabled: await page_flip_audio.finished
 	else: await anim_player.animation_finished
-	queue_free()
+	self.queue_free()
+
 
 func _on_timer_timeout() -> void:
-	# Counting the timer down
-	if is_timer_countdown:
-		hours = str(countdown_time / 3600)
-		minutes = str(countdown_time % 3600 / 60)
-		seconds = str(countdown_time % 3600 % 60)
-		if int(hours) < 10: hours = "0" + hours
-		if int(minutes) < 10: minutes = "0" +minutes
-		if int(seconds) < 10: seconds = "0" +seconds
+	if is_timer_countdown: _timer_countdown()
+	else: _timer_countup()
 
-		if countdown_time > 0:
-			timer_label.text = TIMER_TEXT % [hours,minutes,seconds]
-		elif countdown_time == 0 and not parent.stats.break_window_timeout_time == 0:
-			#message_container.visible = false
-			timer_label.remove_theme_color_override("font_shadow_color")
-			timer_label.add_theme_constant_override("outline_size", 9)
-			timer_label.self_modulate = Color.CRIMSON
-			timer_label.text = timeout_message[randi_range(1,timeout_message.size())]
-		elif countdown_time == -(parent.stats.break_window_timeout_time) and parent.stats.break_window_close_on_timeout:
-			timer.stop()
-			timer_label.visible = false
-			_close_window()
-		elif countdown_time >= -(parent.stats.break_window_timeout_time) or countdown_time < 0:
-			match timer_label.visible:
-				true:
-					timer_label.visible = false
-				false:
-					timeout_audio.play()
-					timer_label.visible = true
-		countdown_time -= 1
 
-	# Counting the timer up
+func _timer_countdown() -> void:
+	hours = str(countdown_time / 3600)
+	minutes = str(int(countdown_time) % 3600 / 60)
+	seconds = str(int(countdown_time) % 3600 % 60)
+
+	if countdown_time > 0: timer_label.text = parent.format_time(TIMER_TEXT,hours,minutes,seconds)
+
+	elif countdown_time == 0 and not stats.break_window_timeout_time == 0:
+		message_container.visible = false
+		timer_label.remove_theme_color_override("font_shadow_color")
+		timer_label.add_theme_constant_override("outline_size", THEME_OUTLINE_SIZE)
+		timer_label.self_modulate = SELF_MODULATE
+		timer_label.text = timeout_message[randi_range(1,timeout_message.size())]
+
+	elif countdown_time == -(stats.break_window_timeout_time) and stats.break_window_close_on_timeout:
+		timer.stop()
+		timer_label.visible = false
+		_close_window()
+
+	elif countdown_time >= -(stats.break_window_timeout_time) or countdown_time < 0:
+		if timer_label.visible: timer_label.visible = false
+		else:
+			timer_label.visible = true
+			if stats.audio_enabled and timeout_audio.volume_db < MAX_DB_TIMEOUT + stats.audio_addend:
+				_timer_countdown_audio()
+
+	countdown_time -= 1
+
+
+func _timer_countdown_audio() -> void:
+	if not stats.break_window_close_on_timeout:
+		if _is_step_too_large(DB_TIMEOUT_DEFAULT_STEP): timeout_audio.volume_db = MAX_DB_TIMEOUT + stats.audio_addend
+		else: timeout_audio.volume_db += DB_TIMEOUT_DEFAULT_STEP
+
 	else:
-		seconds = str(int(seconds) + 1)
-		if int(seconds) >= 60: seconds = "0"; minutes = str(int(minutes) + 1)
-		if int(minutes) >= 60: minutes = "0"; hours = str(int(hours) + 1)
-		var final_hours:String = hours
-		var final_minutes:String = minutes
-		var final_seconds:String = seconds
-		if int(final_hours) < 10: final_hours = "0" + hours
-		if int(final_minutes) < 10: final_minutes = "0" + minutes
-		if int(final_seconds) < 10: final_seconds = "0" + seconds
-		timer_label.text = TIMER_TEXT % [final_hours,final_minutes,final_seconds]
+		var diff:int = abs(MIN_DB_TIMEOUT) + MAX_DB_TIMEOUT
+		var step:float = float(diff) / (ceilf(float(stats.break_window_timeout_time) / 2.0) - 1.0)
+		if _is_step_too_large(step): timeout_audio.volume_db = MAX_DB_TIMEOUT + stats.audio_addend
+		else: timeout_audio.volume_db += step
+
+	timeout_audio.play()
+
+
+func _is_step_too_large(step) -> bool:
+	if timeout_audio.volume_db + step > MAX_DB_TIMEOUT + stats.audio_addend: return true
+	else: return false
+
+
+func _timer_countup() -> void:
+	seconds = str(int(seconds) + 1)
+	if int(seconds) >= 60: seconds = "0"; minutes = str(int(minutes) + 1)
+	if int(minutes) >= 60: minutes = "0"; hours = str(int(hours) + 1)
+	timer_label.text = parent.format_time(TIMER_TEXT,hours,minutes,seconds)

@@ -1,21 +1,27 @@
 # PandaTime_Take-A-Break
 
+**Disclaimer:** The project is currently feature complete. I'm sure there are still things to improve,
+and my todo list isn't completely done either, but for the time being, I will call this project finished.
+Have fun :D
+
 ## Overview
 
 _PandaTime is the big brother of KoalaTime. While KoalaTime aims to be slim, PandaTime provides a more settings heavy experience._
 
 Structure your work time and take a well-deserved break once in a while.
 
-Work time is over! You get a cute image and a fun message to go along with it! It's up to you to decide when to launch your next work session! Increase or decrease your work time as you see fit!
+Work time is over! You get a nice image and a quirky message to go along with it! It's up to you to decide when to launch your next work session! Increase or decrease your work time as you see fit!
 
 Want to [display your own png files](#display-your-own-png-files)!?
 
 ![PandaTime](readme-example.png)
+![PandaTime2](readme-example2.png)
+![PandaTime3](readme-example3.png)
+![PandaTime4](readme-example4.png)
 
 ## TODO / What I want to do
-- _Add Sound for Break Timeout_
 - _Fix ReminderWindow stealing focus_
-- _Fix ReminderWindow wrong position on Secondary-Monitor_
+- _Improve ReminderWindow animation on Secondary-Monitor(s)_
 
 ## Installation
 
@@ -57,7 +63,12 @@ res://
 			images
 ```
 
-... copy and paste your own **png** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
+... copy and paste your own **image** files! You can create any amount of subfolders (subsub ... subfolders) to structure your images **inside** the images directory.
+Supported formats are:
+- .**png**
+- .**jpg**
+- .**jpeg**
+- .**svg**
 
 **Hope you like it!**
 
@@ -82,6 +93,8 @@ Check out and download the amazing [Godot Engine](https://godotengine.org/downlo
 [KoalaTime_Take_A_Break](https://github.com/Cuppixx/KoalaTime_Take-A-Break)
 
 [PandaTime_Take_A_Break](https://github.com/Cuppixx/PandaTime_Take-A-Break)
+
+[TravelingSalesmanProblem_ClassProject](https://github.com/Cuppixx/TravelingSalesmanProblem_ClassProject)
 
 More fun links to come ....
 
