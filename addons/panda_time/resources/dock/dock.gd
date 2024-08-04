@@ -160,5 +160,4 @@ func _verify_file() -> bool:
 func _load_savefile() -> Resource: return ResourceLoader.load(ROOT_PATH+FILE_NAME,"",0)
 
 func write_savefile() -> void:
-	if _verify_file() == true:
-		ResourceSaver.save(stats,ROOT_PATH+FILE_NAME,0)
+	ResourceSaver.save(stats,ROOT_PATH+FILE_NAME,0)
